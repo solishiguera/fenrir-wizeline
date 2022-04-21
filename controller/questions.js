@@ -1,59 +1,40 @@
-const { text } = require("body-parser");
-const userServices = require("../services/questions");
+const UserServices = require("../services/reminders");
 
-module.exports = { 
-  getAllQuestions : () => {
-    sql = 'SELECT * FROM question' 
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+module.exports = {
+  getAllQuestions: async (req, res, next) => {
+    try {
+      const users = await UserServices.getAllQuestions();
+      res.json({ users });
+    } catch (err) {
+      res.json({ message: `Error al obtener preguntas. Err: ${err}` });
+    }
   },
 
-  getQuestion : (questionId) => {
-    sql = 'SELECT * question WHERE question_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[id], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  getQuestion: async (req, res, next) => {
+    try {
+      const user = await UserServices.getQuestion(req.params.question_id);
+      res.json({ user });
+    } catch (err) {
+      res.json({ message: `Error al obtener pregunta. Err: ${err}` });
+    }
   },
 
-  addQuestion : (questionId, empoloyeeId, deparmentId, questionText, isAnonymus, dateCreated, dateLastModifed, likeCount, commentCount, isAnswer) => {
-    sql = 'INSERT INTO question(question_id, empoloyee_id, deparment_id, question_text, is_anonymus, date_created, date_last_modifed, like_count, comment_count, is_answer) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionId, empoloyeeId, deparmentId, questionText, isAnonymus, CURRENT_DATE, CURRENT_DATE, likeCount, commentCount, isAnswer], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  addQuestion : async (req, res, next) => {
+    try {
+      const user = await UserServices.addQuestion(req.body.question_id, req.body.empoloyee_id, req.body.deparment_id, req.body.question_text, req.body.is_anonymus, req.body.date_created, req.body.date_last_modifed, req.body.like_count, req.body.comment_count, req.body.is_answer);
+      res.json("Pregunta agregado!");
+    } catch (err) {
+      res.json({ message: `Error al agregar pregunta. Err: ${err}` });
+    }
   },
 
-  updateQuestion : (questionId, questionText, dateLastModifed ) => {
-    sql = 'UPDATE question_text SET question_text = $1, date_last_modifed = $2 date WHERE question_id = $3'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionId, questionText, CURRENT_DATE], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  updateQuestion: async (req, res, next) => {
+    try {
+      const user = await UserServices.updateQuestion(req.params.question_id, req.body.question_text, req.body.date_last_modifed);
+      res.json("Actualizado correctamente!");
+    } catch (err) {
+      res.json({ message: `Error al actualizar pregunta. Err: ${err}` });
+    }
   }
-  /* Métodos a definir: 
-     - getAllQuestions
-     - getQuestion
-     - addQuestion
-     - updateQuestion
-  */
-}
 
+};
