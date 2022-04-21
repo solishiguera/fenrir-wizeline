@@ -75,4 +75,4 @@ VALUES
 ('Sebastian', 'Rodriguez', 1, TRUE, 'Software Engineer Intern', ''),
 ('Joaquin Arturo', 'Beltran', 1, TRUE, 'Software Engineer Intern', '');
 
-INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modified, like_count, comment_count, is_answer) VALUES(1, 1, "¿Cuál es el proceso de aplicación para conseguir un internship?", '0', CURRENT_DATE, CURRENT_DATE, 0, 0, 0);
+INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modifi  ed, like_count, comment_count, is_answered) VALUES(1, 1, "¿Cuál es el proceso de aplicación para conseguir un internship?", '0', CURRENT_DATE, CURRENT_DATE, 0, 0, 0);
