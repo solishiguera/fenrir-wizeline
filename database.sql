@@ -74,3 +74,6 @@ VALUES
 ('Samuel', 'Ramirez', 1, TRUE, 'Software Engineer Intern', ''),
 ('Sebastian', 'Rodriguez', 1, TRUE, 'Software Engineer Intern', ''),
 ('Joaquin Arturo', 'Beltran', 1, TRUE, 'Software Engineer Intern', '');
+
+INSERT INTO question(empoloyee_id, deparment_id, question_text, is_anonymus, date_created, date_last_modifed, like_count, comment_count, is_answer) 
+VALUES(1, 1, "¿Cuál es el proceso de aplicación para conseguir un internship?", '0', CURRENT_DATE, CURRENT_DATE, 0, 0, 0);
