@@ -25,10 +25,10 @@ module.exports = {
     })
   },
 
-  addQuestion : (questionId, empoloyeeId, deparmentId, questionText, isAnonymus, dateCreated, dateLastModifed, likeCount, commentCount, isAnswer) => {
-    sql = 'INSERT INTO question(question_id, empoloyee_id, deparment_id, question_text, is_anonymus, date_created, date_last_modifed, like_count, comment_count, is_answer) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
+  addQuestion : (empoloyeeId, deparmentId, questionText, isAnonymus, dateCreated, dateLastModifed, likeCount, commentCount, isAnswer) => {
+    sql = 'INSERT INTO question(empoloyee_id, deparment_id, question_text, is_anonymus, date_created, date_last_modifed, like_count, comment_count, is_answer) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)'
     return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionId, empoloyeeId, deparmentId, questionText, isAnonymus, CURRENT_DATE, CURRENT_DATE, likeCount, commentCount, isAnswer], (err, res) => {
+      pool.query(sql,[empoloyeeId, deparmentId, questionText, isAnonymus, dateCreated, dateLastModifed, likeCount, commentCount, isAnswer], (err, res) => {
         if(err) { 
           return reject(err)
         }
