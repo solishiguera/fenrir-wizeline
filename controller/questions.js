@@ -1,4 +1,4 @@
-const UserServices = require("../services/reminders");
+const UserServices = require("../services/questions");
 
 module.exports = {
   getAllQuestions: async (req, res, next) => {
