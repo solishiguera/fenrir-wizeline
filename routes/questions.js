@@ -7,3 +7,4 @@ router.get('/:id', userControllers.getQuestion)
 router.post('/', userControllers.addQuestion)
 router.put('/:id', userControllers.updateQuestion)
 
+module.exports = router;
