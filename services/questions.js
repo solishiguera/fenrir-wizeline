@@ -1,6 +1,5 @@
 const pool = require('../config/db');
-const currentDate = new Date();
-const timestamp = currentDate.getTime();
+const timestamp = new Date();
 
 module.exports = { 
   getAllQuestions : () => {
