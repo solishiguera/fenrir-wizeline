@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 })
 
 // Routes //
-//app.use(require('./routes/routes'));
+app.use(require('./routes/routes'));
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
