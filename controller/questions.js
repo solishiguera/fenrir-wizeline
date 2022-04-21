@@ -3,8 +3,8 @@ const UserServices = require("../services/questions");
 module.exports = {
   getAllQuestions: async (req, res, next) => {
     try {
-      const users = await UserServices.getAllQuestions();
-      res.json({ users });
+      const questions = await UserServices.getAllQuestions();
+      res.json({ questions });
     } catch (err) {
       res.json({ message: `Error al obtener preguntas. Err: ${err}` });
     }
