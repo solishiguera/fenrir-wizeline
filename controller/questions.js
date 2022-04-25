@@ -19,6 +19,15 @@ module.exports = {
     }
   },
 
+  getQuestionWithId: async (req, res, next) =>{
+    try{
+      const question = await UserServices.getQuestionWithId(req.params.id);
+      res.json({question});
+    }catch (err){
+      res.json({message:`Error al obtener la pregunta. Err: ${err}`});
+    }
+  },
+
   addQuestion: async (req, res, next) => {
     try {
       const user = await UserServices.addQuestion(req.body.employee_id, req.body.department_id, req.body.question_text, req.body.is_anonymous, req.body.ask_employee_id);
