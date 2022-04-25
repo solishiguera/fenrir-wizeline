@@ -6,5 +6,6 @@ router.get('/', userControllers.getAllQuestions)
 router.get('/:id', userControllers.getQuestion)
 router.post('/', userControllers.addQuestion)
 router.put('/:id', userControllers.updateQuestion)
+router.delete('/:id', userControllers.deleteQuestion)
 
 module.exports = router;

@@ -12,17 +12,17 @@ module.exports = {
 
   getQuestion: async (req, res, next) => {
     try {
-      const user = await UserServices.getQuestion(req.params.question_id);
+      const user = await UserServices.getQuestion(req.params.id);
       res.json({ user });
     } catch (err) {
       res.json({ message: `Error al obtener pregunta. Err: ${err}` });
     }
   },
 
-  addQuestion : async (req, res, next) => {
+  addQuestion: async (req, res, next) => {
     try {
-      const user = await UserServices.addQuestion(req.body.employee_id, req.body.department_id, req.body.question_text, req.body.is_anonymous, req.body.like_count, req.body.comment_count, req.body.is_answered);
-      res.json("Pregunta agregada!");
+      const user = await UserServices.addQuestion(req.body.employee_id, req.body.department_id, req.body.question_text, req.body.is_anonymous, req.body.ask_employee_id);
+      res.json("Pregunta agregada.");
     } catch (err) {
       res.json({ message: `Error al agregar pregunta. Err: ${err}` });
     }
@@ -34,6 +34,15 @@ module.exports = {
       res.json("Actualizado correctamente!");
     } catch (err) {
       res.json({ message: `Error al actualizar pregunta. Err: ${err}` });
+    }
+  },
+
+  deleteQuestion: async (req, res, next) => { 
+    try {
+      const user = await UserServices.deleteQuestion(req.params.question_id);
+      res.json("Actualizado correctamente!");
+    } catch (err) {
+      res.json({ message: `Error al eliminar pregunta. Err: ${err}` })
     }
   }
 

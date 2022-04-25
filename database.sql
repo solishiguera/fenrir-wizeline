@@ -10,10 +10,12 @@ CREATE TABLE employee(
   employee_id SERIAL PRIMARY KEY,
   employee_name VARCHAR(128) NOT NULL,
   employee_last_name VARCHAR(128) NOT NULL,
-  department_id SERIAL,
+  department_id INTEGER,
   is_admin BOOLEAN NOT NULL,
   job_title VARCHAR(255),
   profile_picture VARCHAR(255),
+  username VARCHAR(128) UNIQUE,
+  employee_password VARCHAR(128),
   CONSTRAINT fk_department_id 
    FOREIGN KEY (department_id) 
      REFERENCES department(department_id)
@@ -21,8 +23,8 @@ CREATE TABLE employee(
 
 CREATE TABLE question(
   question_id SERIAL PRIMARY KEY,
-  employee_id SERIAL,
-  department_id SERIAL,
+  employee_id INTEGER,
+  department_id INTEGER,
   CONSTRAINT fk_employee_id
     FOREIGN KEY (employee_id)
       REFERENCES employee(employee_id),
@@ -40,8 +42,8 @@ CREATE TABLE question(
 
 CREATE TABLE likes( 
   like_id SERIAL PRIMARY KEY,
-  employee_id SERIAL,
-  question_id SERIAL,
+  employee_id INTEGER,
+  question_id INTEGER,
   CONSTRAINT fk_employee_id
     FOREIGN KEY (employee_id)
       REFERENCES employee(employee_id),
@@ -52,8 +54,8 @@ CREATE TABLE likes(
 
 CREATE TABLE comment(
   comment_id SERIAL PRIMARY KEY,
-  employee_id SERIAL,
-  question_id SERIAL,
+  employee_id INTEGER,
+  question_id INTEGER,
   CONSTRAINT fk_employee_id
     FOREIGN KEY (employee_id)
       REFERENCES employee(employee_id),
@@ -66,7 +68,7 @@ CREATE TABLE comment(
   is_anonymous BOOLEAN NOT NULL
 );
 
-INSERT INTO department(department_name, is_active) VALUES('Sowftware Engineering Interns', TRUE)
+INSERT INTO department(department_name, is_active) VALUES('Sowftware Engineering Interns', TRUE);
 INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture)
 VALUES
 ('Diego', 'Solis Higuera', 1, TRUE, 'Software Engineer Intern', ''),
@@ -75,4 +77,25 @@ VALUES
 ('Sebastian', 'Rodriguez', 1, TRUE, 'Software Engineer Intern', ''),
 ('Joaquin Arturo', 'Beltran', 1, TRUE, 'Software Engineer Intern', '');
 
-INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modifi  ed, like_count, comment_count, is_answered) VALUES(1, 1, "¿Cuál es el proceso de aplicación para conseguir un internship?", '0', CURRENT_DATE, CURRENT_DATE, 0, 0, 0);
+INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(1, 1, '¿Cuál es el proceso para aplicar para un internship?', FALSE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
+
+INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(404, 404, '¿En qué piso se ubica la cafetería?', TRUE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
+INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(4, 1, '¿El uso de cubrebocas es obligatorio?', FALSE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
+
+
+UPDATE employee
+SET username = 'diegosolis' WHERE employee_id = 1;
+UPDATE employee
+SET username = 'anavea' WHERE employee_id = 2;
+UPDATE employee
+SET username = 'samramirez' WHERE employee_id = 3;
+UPDATE employee
+SET username = 'sebasrdz' WHERE employee_id = 4;
+UPDATE employee
+SET username = 'jackbel' WHERE employee_id = 5;
+
+UPDATE employee
+SET employee_password = 'ih8bugs';
+
+INSERT INTO department(department_id, department_name, is_active) VALUES(404, 'Anonymous', TRUE);
+INSERT INTO employee(employee_id, employee_name, employee_last_name, department_id, is_admin) VALUES(404, 'Anonymous', 'Anonymous', 404, FALSE);

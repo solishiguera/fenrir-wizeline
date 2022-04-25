@@ -15,9 +15,9 @@ module.exports = {
   },
 
   getQuestion : (questionId) => {
-    sql = 'SELECT * question WHERE question_id = $1'
+    sql = 'SELECT * FROM question WHERE question_id = $1'
     return new Promise( (resolve, reject) => {
-      pool.query(sql,[id], (err, res) => {
+      pool.query(sql,[questionId], (err, res) => {
         if(err) { 
           return reject(err)
         }
@@ -26,10 +26,15 @@ module.exports = {
     })
   },
 
-  addQuestion : (employeeId, departmentId, questionText, isAnonymous, likeCount, commentCount, isAnswered) => {
-    sql = 'INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modified, like_count, comment_count, is_answered) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)'
+  addQuestion : (employeeId, departmentId, questionText, isAnonymous, askEmployeeId) => {
+    if(isAnonymous) { 
+      employeeId = 404
+    }
+
+    employeeId = isAnonymous ? 404 : employeeId; 
+    sql = 'INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modified, like_count, comment_count, is_answered, ask_employee_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
     return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeId, departmentId, questionText, isAnonymous, timestamp, timestamp, likeCount, commentCount, isAnswered], (err, res) => {
+      pool.query(sql,[employeeId, departmentId, questionText, isAnonymous, timestamp, timestamp, 0, 0, 0, askEmployeeId], (err, res) => {
         if(err) { 
           return reject(err)
         }
@@ -48,12 +53,18 @@ module.exports = {
         return resolve(res.rows)
       })
     })
+  }, 
+
+  deleteQuestion : (questionId) => {
+    sql = 'DELETE FROM question WHERE question_id = $1'
+    return new Promise( (resolve, reject) => {
+      pool.query(sql,[questionId], (err, res) => {
+        if(err) { 
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
   }
-  /* Métodos a definir: 
-     - getAllQuestions
-     - getQuestion
-     - addQuestion
-     - updateQuestion
-  */
 }
 
