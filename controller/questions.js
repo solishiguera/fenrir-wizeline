@@ -12,8 +12,8 @@ module.exports = {
 
   getQuestion: async (req, res, next) => {
     try {
-      const user = await UserServices.getQuestion(req.params.id);
-      res.json({ user });
+      const question = await UserServices.getQuestion(req.params.id);
+      res.json({ question });
     } catch (err) {
       res.json({ message: `Error al obtener pregunta. Err: ${err}` });
     }
