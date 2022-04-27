@@ -25,6 +25,19 @@ module.exports = {
       })
     })
   },
+  getQuestionWithId : (userId) => {
+    sql = 'SELECT * FROM question WHERE employee_id = $1'
+    return new Promise( (resolve, reject) => {
+      pool.query(sql,[userId], (err, res) => {
+        if(err) {
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
+  }
+
+  ,
 
   addQuestion : (employeeId, departmentId, questionText, isAnonymous, askEmployeeId) => {
     if(isAnonymous) { 
@@ -60,6 +73,18 @@ module.exports = {
     return new Promise( (resolve, reject) => {
       pool.query(sql,[questionId], (err, res) => {
         if(err) { 
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
+  },
+
+  getQuestionDepartment:(department) =>{
+    sql = 'SELECT * FROM question WHERE department_id =$1'
+    return new Promise((resolve, reject) => {
+      pool.query(sql,[department],(err,res)=>{
+        if(err){
           return reject(err)
         }
         return resolve(res.rows)
