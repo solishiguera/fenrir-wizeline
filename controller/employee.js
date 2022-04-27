@@ -13,7 +13,7 @@ module.exports = {
   addEmployee: async (req, res, next) => {
     try {
       const employee = await UserServices.addEmployee(req.body.employee_name, req.body.employee_last_name, req.body.job_title, req.body.username, req.body.employee_password );
-      res.json("Empleado agregado.");
+      res.json( { employee } );
     } catch (err) {
       res.json({ message: `Error al agregar empleado. Err: ${err}` });
     }
