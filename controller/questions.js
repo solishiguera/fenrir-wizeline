@@ -39,7 +39,7 @@ module.exports = {
 
   updateQuestion: async (req, res, next) => {
     try {
-      const user = await UserServices.updateQuestion(req.params.question_id, req.body.question_text, req.body.date_last_modifed);
+      const user = await UserServices.updateQuestion(req.params.id, req.body.question_text, req.body.date_last_modifed);
       res.json("Actualizado correctamente!");
     } catch (err) {
       res.json({ message: `Error al actualizar pregunta. Err: ${err}` });
@@ -48,7 +48,7 @@ module.exports = {
 
   deleteQuestion: async (req, res, next) => { 
     try {
-      const user = await UserServices.deleteQuestion(req.params.question_id);
+      const user = await UserServices.deleteQuestion(req.params.id);
       res.json("Actualizado correctamente!");
     } catch (err) {
       res.json({ message: `Error al eliminar pregunta. Err: ${err}` })
