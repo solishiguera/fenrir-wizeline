@@ -14,10 +14,10 @@ module.exports = {
     })
   },
 
-  addEmployee : (employeeName, employeeLastName, departmentId, isAdmin, jobTitle, profilePicture, username, employeePassword) => {
-    sql = 'INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture, username, employee_password) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING employee_id'
+  addEmployee : (employeeName, employeeLastName, jobTitle, username, employeePassword) => {
+    sql = 'INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture, username, employee_password) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *'
     return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeName, employeeLastName, departmentId, isAdmin, jobTitle, profilePicture, username, employeePassword], (err, res) => {
+      pool.query(sql,[employeeName, employeeLastName, 101, "false", jobTitle, null, username, employeePassword], (err, res) => {
         if(err) { 
           return reject(err)
         }
