@@ -78,6 +78,18 @@ module.exports = {
         return resolve(res.rows)
       })
     })
+  },
+
+  getQuestionDepartment:(department) =>{
+    sql = 'SELECT * FROM question WHERE department_id =$1'
+    return new Promise((resolve, reject) => {
+      pool.query(sql,[department],(err,res)=>{
+        if(err){
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
   }
 }
 

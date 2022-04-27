@@ -54,5 +54,13 @@ module.exports = {
       res.json({ message: `Error al eliminar pregunta. Err: ${err}` })
     }
   }
-
+,
+  getQuestionDepartment:async (req,res,next) =>{
+    try{
+      const question = await UserServices.getQuestionDepartment(req.params.id);
+      res.json({question});
+    }catch(err){
+      res.json({message:`Error al obtener la pregunta. Err: ${err}`})
+    }
+  }
 };

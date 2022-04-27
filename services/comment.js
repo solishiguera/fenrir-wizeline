@@ -15,5 +15,30 @@ module.exports ={
                 return resolve(res.rows)
             })
         })
+    },
+
+    getCommentsQuestion : (question_id) => {
+        sql = 'SELECT * FROM comment WHERE question_id =$1'
+        return new Promise((resolve, reject) => {
+            pool.query(sql,[question_id], (err, res) => {
+                if(err){
+                    return reject(err)
+                }
+                return resolve(res.rows)
+            })
+        })
+    },
+    getCommentWithId : (comment_id) => {
+        sql = 'SELECT * FROM comment WHERE comment_id = $1'
+        return new Promise((resolve, reject) => {
+            pool.query(sql,[comment_id],(err,res) => {
+                if(err){
+                    return reject(err)
+                }
+                return resolve(res.rows)
+            })
+        })
     }
+
+
 }
