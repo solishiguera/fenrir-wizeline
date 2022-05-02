@@ -18,7 +18,7 @@ module.exports ={
     },
 
     getCommentsQuestion : (question_id) => {
-        sql = 'SELECT * FROM comment WHERE question_id =$1'
+        sql = 'SELECT * FROM comment WHERE question_id = $1'
         return new Promise((resolve, reject) => {
             pool.query(sql,[question_id], (err, res) => {
                 if(err){
