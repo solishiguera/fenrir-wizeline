@@ -1,9 +1,9 @@
 const UserServices = require("../services/employee");
 
 module.exports = {
-    getEmployee: async (req, res, next) => {
+  userSignin: async (req, res, next) => {
     try {
-      const employee = await UserServices.getEmployee(req.params.username);
+      const employee = await UserServices.userSignin(req.body.username);
       res.json({ employee });
     } catch (err) {
       res.json({ message: `Error al obtener empleado. Err: ${err}` });
