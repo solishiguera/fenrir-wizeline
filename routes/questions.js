@@ -1,8 +1,9 @@
 const express = require('express')
+const SecureEnv = require('../config/security/security')
 const router = express.Router()
 const userControllers = require('../controller/questions')
 
-router.get('/', userControllers.getAllQuestions)
+router.get('/',SecureEnv.authenticateToken, userControllers.getAllQuestions)
 router.get('/:id', userControllers.getQuestion)
 router.post('/', userControllers.addQuestion)
 router.put('/:id', userControllers.updateQuestion)

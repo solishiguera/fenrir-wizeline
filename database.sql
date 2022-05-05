@@ -99,3 +99,41 @@ SET employee_password = 'ih8bugs';
 
 INSERT INTO department(department_id, department_name, is_active) VALUES(404, 'Anonymous', TRUE);
 INSERT INTO employee(employee_id, employee_name, employee_last_name, department_id, is_admin) VALUES(404, 'Anonymous', 'Anonymous', 404, FALSE);
+
+
+SELECT question_id AS "Question_ID", COUNT(comment_id) AS "Quantity"
+FROM comment
+GROUP BY question_id;
+
+/*
+CREATE OR REPLACE FUNCTION increment_comment_count_trigger_func(id INTEGER) RETURNS TRIGGER AS $$  
+BEGIN 
+  UPDATE question
+  SET comment_count = comment_count + 1 
+  WHERE question_id = id;
+RETURN NEW;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER increment_comment_count_trigger 
+  AFTER INSERT 
+  ON question
+  EXECUTE PROCEDURE increment_comment_count_trigger_func(NEW.question_id);
+*/
+  -- ~~~~~~~~~~~~~~~~~~~~~
+CREATE OR REPLACE FUNCTION increment_comment_count_trigger()
+  RETURNS trigger AS
+$func$
+BEGIN 
+  UPDATE question
+  SET comment_count = 100
+  WHERE question_id = NEW.question_id;
+  RETURN NEW;
+END;
+$func$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE TRIGGER update_comment_count
+  AFTER INSERT
+  ON comment
+  FOR EACH STATEMENT 
+  EXECUTE PROCEDURE increment_comment_count_trigger();
