@@ -122,14 +122,14 @@ CREATE TRIGGER increment_comment_count_trigger
   -- ~~~~~~~~~~~~~~~~~~~~~
 CREATE OR REPLACE FUNCTION increment_comment_count_trigger()
   RETURNS trigger AS
-$func$
+$$
 BEGIN 
-  UPDATE question
+  UPDATE question q
   SET comment_count = 100
-  WHERE question_id = NEW.question_id;
+  WHERE q.question_id = NEW.question_id;
   RETURN NEW;
 END;
-$func$
+$$
 LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE TRIGGER update_comment_count
