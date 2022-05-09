@@ -80,16 +80,29 @@ module.exports = {
     })
   },
 
-  getQuestionDepartment:(department) =>{
-    sql = 'SELECT * FROM question WHERE department_id =$1'
+  getQuestionsByQuery:(search) =>{
+    sql = 'SELECT * FROM question WHERE full_text_search @@ to_tsquery($1)'
     return new Promise((resolve, reject) => {
-      pool.query(sql,[department],(err,res)=>{
+      pool.query(sql,[search],(err,res)=>{
         if(err){
           return reject(err)
         }
         return resolve(res.rows)
       })
     })
-  }
+  },
+
+  updateIndexOfQuestions:() =>{
+    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text) WHERE full_text_search is null'
+    return new Promise((resolve, reject) => {
+      pool.query(sql,(err,res)=>{
+        if(err){
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
+  },
+
 }
 

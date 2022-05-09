@@ -32,6 +32,7 @@ module.exports = {
     try {
       const user = await UserServices.addQuestion(req.body.employee_id, req.body.department_id, req.body.question_text, req.body.is_anonymous, req.body.ask_employee_id);
       res.json("Pregunta agregada.");
+      updateIndexOfQuestions();
     } catch (err) {
       res.json({ message: `Error al agregar pregunta. Err: ${err}` });
     }
@@ -62,5 +63,24 @@ module.exports = {
     }catch(err){
       res.json({message:`Error al obtener la pregunta. Err: ${err}`})
     }
+  },
+
+  getQuestionsByQuery:async ( req, res, next ) => {
+    try {
+      const questions = await UserServices.getQuestionsByQuery(req.params.text);
+      res.json({ questions });
+    }
+    catch ( err ) {
+      res.json({message:`Error al realizar tu búsqueda. Intentalo de nuevo. Error: ${err}`})
+    }
   }
 };
+
+async function updateIndexOfQuestions() {
+  try {
+    await UserServices.updateIndexOfQuestions();
+  }
+  catch {
+    res.json({message:`Error al realizar tu búsqueda. Intentalo de nuevo. Error: ${err}`})
+  }
+}

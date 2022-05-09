@@ -4,6 +4,7 @@ const userControllers = require('../controller/questions')
 
 router.get('/', userControllers.getAllQuestions)
 router.get('/:id', userControllers.getQuestion)
+router.get('/search/:text', userControllers.getQuestionsByQuery)
 router.post('/', userControllers.addQuestion)
 router.put('/:id', userControllers.updateQuestion)
 router.delete('/:id', userControllers.deleteQuestion)
