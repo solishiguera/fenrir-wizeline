@@ -40,7 +40,7 @@ CREATE TABLE question(
   is_answered BOOLEAN
 );
 
-CREATE TABLE likes( 
+CREATE TABLE likes(  
   like_id SERIAL PRIMARY KEY,
   employee_id INTEGER,
   question_id INTEGER,
@@ -125,9 +125,9 @@ CREATE OR REPLACE FUNCTION increment_comment_count_trigger()
 $$
 BEGIN 
   UPDATE question q
-  SET comment_count = 100
-  WHERE q.question_id = NEW.question_id;
-  RETURN NEW;
+  SET comment_count = (SELECT comment_count FROM question WHERE question_id = new.question_id) + 1
+  WHERE q.question_id = new.question_id;
+  RETURN new;
 END;
 $$
 LANGUAGE 'plpgsql';
@@ -135,5 +135,36 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE TRIGGER update_comment_count
   AFTER INSERT
   ON comment
-  FOR EACH STATEMENT 
+  FOR EACH ROW 
   EXECUTE PROCEDURE increment_comment_count_trigger();
+
+
+-- ~~~~~~~~~~~~~~~~~~~~~
+
+CREATE TABLE comment_info(
+  comment_info_id serial PRIMARY KEY NOT NULL, 
+  question_id INTEGER NOT NULL, 
+  CONSTRAINT fk_question_id
+    FOREIGN KEY (question_id)
+      REFERENCES question(question_id),
+  comment varchar(256) NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION add_like_info()
+  RETURNS TRIGGER AS
+$$
+BEGIN 
+  INSERT INTO comment_info(question_id, comment) VALUES(new.question_id, new.comment_text);
+  RETURN new;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER like_register
+  AFTER INSERT
+  ON comment
+  FOR EACH ROW 
+  EXECUTE PROCEDURE add_like_info();
+
+DROP TRIGGER like_register ON comment;
+DROP FUNCTION add_like_info;

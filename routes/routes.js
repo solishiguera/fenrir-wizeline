@@ -6,6 +6,7 @@ router.use('/questions', SecureEnv.authenticateToken, require('./questions'));
 router.use('/comment', SecureEnv.authenticateToken, require('./comment'));
 router.use('/employee', SecureEnv.authenticateToken, require('./employee'));
 router.use('/admin', SecureEnv.authenticateToken, require('./admin'));
+router.use('/department', SecureEnv.authenticateToken, require('./department'));
 router.use('/login', require('./login'));
 
 module.exports = router;
