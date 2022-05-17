@@ -14,7 +14,7 @@ module.exports = {
   addEmployee: async (req, res, next) => {
     try {
       const securePsw = await SecureEnv.securePassword(req.body.employee_password);
-      const employee = await UserServices.addEmployee(req.body.employee_name, req.body.employee_last_name, req.body.job_title, req.body.username, securePsw);
+      const employee = await UserServices.addEmployee(req.body.employee_name, req.body.employee_last_name, req.body.department_id, req.body.job_title, req.body.username, securePsw);
       res.json( { employee } );
     } catch (err) {
       res.json({ message: `Error al agregar empleado. Err: ${err}` });
