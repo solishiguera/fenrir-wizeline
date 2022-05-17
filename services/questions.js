@@ -57,7 +57,7 @@ module.exports = {
   },
 
   updateQuestion : (questionId, questionText) => {
-    sql = 'UPDATE question question_text SET question_text = $1, date_last_modifed = $2 date WHERE question_id = $3'
+    sql = 'UPDATE question question_text SET question_text = $1, date_last_modified = $2 WHERE question_id = $3'
     return new Promise( (resolve, reject) => {
       pool.query(sql,[questionText, timestamp, questionId], (err, res) => {
         if(err) { 

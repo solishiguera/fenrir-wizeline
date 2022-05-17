@@ -2,8 +2,20 @@ const pool = require('../config/db');
 const timestamp = new Date();
 
 module.exports = { 
-    getEmployee : (username) => {
+    userSignin : (username) => {
     sql = 'SELECT * FROM employee WHERE username = $1'
+    return new Promise( (resolve, reject) => {
+      pool.query(sql,[username], (err, res) => {
+        if(err) { 
+          return reject(err)
+        }
+        return resolve(res.rows)
+      })
+    })
+  },
+
+  login : (username) => {
+    sql = "SELECT * from employee WHERE username = $1"
     return new Promise( (resolve, reject) => {
       pool.query(sql,[username], (err, res) => {
         if(err) { 
