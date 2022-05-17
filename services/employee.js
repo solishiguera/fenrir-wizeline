@@ -15,7 +15,7 @@ module.exports = {
   },
 
   login : (username) => {
-    sql = 'SELECT * from employee WHERE username = $1'
+    sql = "SELECT e.employee_id, e.employee_name, e.employee_last_name, e.department_id, e.is_admin, e.job_title, e.profile_picture, e.username from employee e WHERE username = $1"
     return new Promise( (resolve, reject) => {
       pool.query(sql,[username], (err, res) => {
         if(err) { 
