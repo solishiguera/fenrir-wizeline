@@ -31,12 +31,13 @@ module.exports = {
         throw 'Usuario no existe';
       }
 
+      // Validate password
       const correctPassword = await SecureEnv.comparePassword(req.body.employee_password, employee[0]['employee_password'])
       if(!correctPassword) { 
         throw 'Contraseña incorrecta';
       }
 
-      const accessToken = SecureEnv.authorizeUser(employee)
+      const accessToken = SecureEnv.generateAccessToken(employee)
       res.json({accessToken})
     } catch (err) {
       res.json({ message: `Error al obtener usuario. Err: ${err}` });
@@ -52,7 +53,7 @@ module.exports = {
     }
   },
 
-  deleteEmployee: async (req, res, next) => { 
+  deleteEmployee: async (req, res, next) => {
     try {
       const user = await UserServices.deleteEmployee(req.params.id);
       res.json("Eliminado correctamente!");
