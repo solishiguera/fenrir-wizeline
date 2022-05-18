@@ -29,9 +29,9 @@ module.exports = {
     }
   },
 
-  logout : async (req, res, next) => { 
-
-
+  logout : async (req, res, next) => {
+    const deleteToken = AuthServices.deleteRefreshToken(req.body.refreshToken)
+    res.send(204)
   },
 
   token : async (req, res, next) => {
