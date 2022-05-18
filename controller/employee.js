@@ -2,6 +2,9 @@ const UserServices = require("../services/employee");
 const SecureEnv = require("../config/security/security");
 
 module.exports = {
+  /**
+  * @deprecated Will be deleted soon. Use login instead.
+  */
   userSignin: async (req, res, next) => {
     try {
       const employee = await UserServices.userSignin(req.body.username);
@@ -15,7 +18,8 @@ module.exports = {
     try {
       const securePsw = await SecureEnv.securePassword(req.body.employee_password);
       const employee = await UserServices.addEmployee(req.body.employee_name, req.body.employee_last_name, req.body.department_id, req.body.job_title, req.body.username, securePsw);
-      res.json( { employee } );
+      const accessToken = SecureEnv.generateAccessToken(employee)
+      res.json({accessToken})
     } catch (err) {
       res.json({ message: `Error al agregar empleado. Err: ${err}` });
     }
