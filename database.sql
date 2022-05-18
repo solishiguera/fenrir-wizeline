@@ -72,43 +72,6 @@ CREATE TABLE comment(
   is_anonymous BOOLEAN NOT NULL
 );
 
-INSERT INTO department(department_name, is_active) VALUES('Sowftware Engineering Interns', TRUE);
-INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture)
-VALUES
-('Diego', 'Solis Higuera', 1, TRUE, 'Software Engineer Intern', ''),
-('Ana Lucía', 'Vea Tellez', 1, TRUE, 'Software Engineer Intern', ''),
-('Samuel', 'Ramirez', 1, TRUE, 'Software Engineer Intern', ''),
-('Sebastian', 'Rodriguez', 1, TRUE, 'Software Engineer Intern', ''),
-('Joaquin Arturo', 'Beltran', 1, TRUE, 'Software Engineer Intern', '');
-
-INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(1, 1, '¿Cuál es el proceso para aplicar para un internship?', FALSE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
-
-INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(404, 404, '¿En qué piso se ubica la cafetería?', TRUE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
-INSERT INTO question(employee_id,department_id,question_text,is_anonymous,date_created,date_last_modified,like_count,comment_count,is_answered) VALUES(4, 1, '¿El uso de cubrebocas es obligatorio?', FALSE, CURRENT_DATE, CURRENT_DATE, 0, 0, FALSE);
-
-
-UPDATE employee
-SET username = 'diegosolis' WHERE employee_id = 1;
-UPDATE employee
-SET username = 'anavea' WHERE employee_id = 2;
-UPDATE employee
-SET username = 'samramirez' WHERE employee_id = 3;
-UPDATE employee
-SET username = 'sebasrdz' WHERE employee_id = 4;
-UPDATE employee
-SET username = 'jackbel' WHERE employee_id = 5;
-
-UPDATE employee
-SET employee_password = 'ih8bugs';
-
-INSERT INTO department(department_id, department_name, is_active) VALUES(404, 'Anonymous', TRUE);
-INSERT INTO employee(employee_id, employee_name, employee_last_name, department_id, is_admin) VALUES(404, 'Anonymous', 'Anonymous', 404, FALSE);
-
-
-SELECT question_id AS "Question_ID", COUNT(comment_id) AS "Quantity"
-FROM comment
-GROUP BY question_id;
-
   -- ~~~~~~~~~~~~~~~~~~~~~
 CREATE OR REPLACE FUNCTION increment_comment_count_trigger()
   RETURNS trigger AS
@@ -172,3 +135,14 @@ CREATE OR REPLACE TRIGGER update_decrement_like_count
 
 ALTER TABLE likes
 ADD CONSTRAINT constraint_like UNIQUE (question_id, employee_id);
+
+CREATE TABLE token(
+  token_id SERIAL PRIMARY KEY,
+  username VARCHAR(128) NOT NULL,
+  token VARCHAR(512) NOT NULL,
+  date_created TIMESTAMP, 
+  expiration_date TIMESTAMP,
+  CONSTRAINT fk_username
+    FOREIGN KEY (username)
+      REFERENCES employee(username)
+);
