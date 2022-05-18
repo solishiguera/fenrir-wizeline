@@ -8,5 +8,6 @@ router.use('/employee', require('./employee'));
 router.use('/admin', SecureEnv.authenticateToken, require('./admin'));
 router.use('/department', SecureEnv.authenticateToken, require('./department'));
 router.use('/login', require('./login'));
+router.use('/like', SecureEnv.authenticateToken, require('./like'));
 
 module.exports = router;
