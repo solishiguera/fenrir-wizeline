@@ -3,7 +3,7 @@ const timestamp = new Date();
 
 module.exports = { 
     getAllEmployees : () => {
-    sql = 'SELECT employee_id, username, employee_name, employee_last_name, department_id, is_admin FROM employee'
+    sql = 'SELECT employee_id, username, employee_name, employee_last_name, department_id, is_admin FROM employee ORDER BY employee_name ASC'
     return new Promise( (resolve, reject) => {
       pool.query(sql, (err, res) => {
         if(err) { 
