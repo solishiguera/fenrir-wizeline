@@ -14,18 +14,6 @@ module.exports = {
     })
   },
 
-  login : (username) => {
-    sql = "SELECT * from employee WHERE username = $1"
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[username], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
-  },
-
   addEmployee : (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
     if(deptId == null) { 
       deptId = 101

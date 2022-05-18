@@ -1,7 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const userControllers = require('../controller/employee')
+const LoginController = require('../controller/employee')
 
-router.post('/', userControllers.login);
 
+/**
+ * @deprecated Use /auth instead.
+*/
+router.post('/', LoginController.login);
+router.delete('/', LoginController.logout);
+router.post('/token', LoginController.token);
 module.exports = router;
