@@ -1,5 +1,4 @@
 const UserServices = require("../services/employee");
-const SecureEnv = require("../config/security/security");
 
 module.exports = {
   /**
@@ -22,29 +21,6 @@ module.exports = {
       res.json({accessToken})
     } catch (err) {
       res.json({ message: `Error al agregar empleado. Err: ${err}` });
-    }
-  },
-
-  login: async (req, res, next) => {
-    try {
-      
-      const employee = await UserServices.login(req.body.username);
-
-      // Si no existe usuario
-      if(Object.keys(employee).length === 0) { 
-        throw 'Usuario no existe';
-      }
-
-      // Validate password
-      const correctPassword = await SecureEnv.comparePassword(req.body.employee_password, employee[0]['employee_password'])
-      if(!correctPassword) { 
-        throw 'Contraseña incorrecta';
-      }
-
-      const accessToken = SecureEnv.generateAccessToken(employee)
-      res.json({accessToken})
-    } catch (err) {
-      res.json({ message: `Error al obtener usuario. Err: ${err}` });
     }
   },
 
