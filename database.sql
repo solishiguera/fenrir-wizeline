@@ -44,12 +44,16 @@ CREATE TABLE likes(
   like_id SERIAL PRIMARY KEY,
   employee_id INTEGER,
   question_id INTEGER,
+  username VARCHAR(128),
   CONSTRAINT fk_employee_id
     FOREIGN KEY (employee_id)
       REFERENCES employee(employee_id),
   CONSTRAINT fk_question_id
     FOREIGN KEY (question_id)
-      REFERENCES question(question_id)
+      REFERENCES question(question_id),
+  CONSTRAINT fk_username
+      FOREIGN KEY (username)
+        REFERENCES employee(username)
 );
 
 CREATE TABLE comment(
@@ -105,20 +109,6 @@ SELECT question_id AS "Question_ID", COUNT(comment_id) AS "Quantity"
 FROM comment
 GROUP BY question_id;
 
-/*
-CREATE OR REPLACE FUNCTION increment_comment_count_trigger_func(id INTEGER) RETURNS TRIGGER AS $$  
-BEGIN 
-  UPDATE question
-  SET comment_count = comment_count + 1 
-  WHERE question_id = id;
-RETURN NEW;
-END; $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER increment_comment_count_trigger 
-  AFTER INSERT 
-  ON question
-  EXECUTE PROCEDURE increment_comment_count_trigger_func(NEW.question_id);
-*/
   -- ~~~~~~~~~~~~~~~~~~~~~
 CREATE OR REPLACE FUNCTION increment_comment_count_trigger()
   RETURNS trigger AS
@@ -140,31 +130,45 @@ CREATE OR REPLACE TRIGGER update_comment_count
 
 
 -- ~~~~~~~~~~~~~~~~~~~~~
-
-CREATE TABLE comment_info(
-  comment_info_id serial PRIMARY KEY NOT NULL, 
-  question_id INTEGER NOT NULL, 
-  CONSTRAINT fk_question_id
-    FOREIGN KEY (question_id)
-      REFERENCES question(question_id),
-  comment varchar(256) NOT NULL
-);
-
-CREATE OR REPLACE FUNCTION add_like_info()
-  RETURNS TRIGGER AS
+-- ~~~~~~~~~~~~~~~~~~~~~
+CREATE OR REPLACE FUNCTION increment_like_count_trigger()
+  RETURNS trigger AS
 $$
 BEGIN 
-  INSERT INTO comment_info(question_id, comment) VALUES(new.question_id, new.comment_text);
+  UPDATE question q
+  SET like_count = (SELECT like_count FROM question WHERE question_id = new.question_id) + 1
+  WHERE q.question_id = new.question_id;
   RETURN new;
 END;
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE TRIGGER like_register
+CREATE OR REPLACE TRIGGER update_like_count
   AFTER INSERT
-  ON comment
+  ON likes
   FOR EACH ROW 
-  EXECUTE PROCEDURE add_like_info();
+  EXECUTE PROCEDURE increment_like_count_trigger();
 
-DROP TRIGGER like_register ON comment;
-DROP FUNCTION add_like_info;
+-- ~~~~~~~~~
+
+CREATE OR REPLACE FUNCTION decrement_like_count_trigger()
+  RETURNS trigger AS
+$$
+BEGIN 
+  UPDATE question q
+  SET like_count = (SELECT like_count FROM question WHERE question_id = old.question_id) - 1
+  WHERE q.question_id = old.question_id;
+  RETURN old;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE TRIGGER update_decrement_like_count
+  AFTER DELETE
+  ON likes
+  FOR EACH ROW 
+  EXECUTE PROCEDURE decrement_like_count_trigger();
+
+
+ALTER TABLE likes
+ADD CONSTRAINT constraint_like UNIQUE (question_id, employee_id);
