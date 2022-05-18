@@ -14,6 +14,9 @@ module.exports = {
     })
   },
 
+  /**
+  * @deprecated Will be deleted soon. Use signup instead.
+  */
   addEmployee : (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
     if(deptId == null) { 
       deptId = 101

@@ -1,4 +1,5 @@
 const UserServices = require("../services/employee");
+const SecureEnv = require("../config/security/security");
 
 module.exports = {
   /**
@@ -13,6 +14,10 @@ module.exports = {
     }
   },
 
+
+  /**
+  * @deprecated Will be deleted soon. Use signup instead.
+  */
   addEmployee: async (req, res, next) => {
     try {
       const securePsw = await SecureEnv.securePassword(req.body.employee_password);
