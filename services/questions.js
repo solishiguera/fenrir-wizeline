@@ -93,7 +93,7 @@ module.exports = {
   },
 
   updateIndexOfQuestions:() =>{
-    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text)'
+    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text)) WHERE full_text_search IS null'
     return new Promise((resolve, reject) => {
       pool.query(sql,(err,res)=>{
         if(err){
