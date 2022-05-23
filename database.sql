@@ -16,6 +16,7 @@ CREATE TABLE employee(
   profile_picture VARCHAR(255),
   username VARCHAR(128) UNIQUE,
   employee_password VARCHAR(128),
+  tsvector full_text_search,
   CONSTRAINT fk_department_id 
    FOREIGN KEY (department_id) 
      REFERENCES department(department_id)
@@ -37,7 +38,8 @@ CREATE TABLE question(
   date_last_modified TIMESTAMP,
   like_count INTEGER,
   comment_count INTEGER,
-  is_answered BOOLEAN
+  is_answered BOOLEAN,
+  tsvector full_text_search
 );
 
 CREATE TABLE likes(  
