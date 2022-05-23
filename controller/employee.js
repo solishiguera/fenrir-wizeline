@@ -32,7 +32,7 @@ module.exports = {
   updateEmployee: async (req, res, next) => {
     try {
       const employee = await UserServices.updateEmployee(req.params.id, req.body.is_admin);
-      res.json("Actualizado correctamente!");
+      res.json("Empleado actualizado correctamente!");
     } catch (err) {
       res.json({ message: `Error al actualizar empleado. Err: ${err}` });
     }

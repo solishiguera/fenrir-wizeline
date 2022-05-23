@@ -16,7 +16,7 @@ module.exports = {
             const comments = await UserServices.getCommentsQuestion(req.params.id);
             res.json({comments});
         }catch(err){
-            res.json({message: `Error al obtener los comentarios. Err:${err}`})
+            res.json({message: `Error al obtener los comentarios de pregunta. Err:${err}`})
         }
     },
 
@@ -25,7 +25,7 @@ module.exports = {
             const comments = await UserServices.getCommentWithId(req.params.id);
             res.json({comments});
         }catch(err){
-            res.json({message:`Error al obtener los comentarios. Err${err}`})
+            res.json({message:`Error al obtener comentario con ID. Err: ${err}`})
         }
     }
 

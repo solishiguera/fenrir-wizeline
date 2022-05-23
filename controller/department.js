@@ -15,7 +15,7 @@ module.exports = {
       const department = await DepartmentServices.getDepartment(req.params.id);
       res.json({ department });
     } catch (err) {
-      res.json({ message: `Error al obtener departamento. Err: ${err}` });
+      res.json({ message: `Error al obtener departamento con ID. Err: ${err}` });
     }
   },
 

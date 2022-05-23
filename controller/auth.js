@@ -48,7 +48,7 @@ module.exports = {
 
       res.json({accessToken, refreshToken}) 
     } catch (err) {
-      res.json({ message: `Error al agregar empleado. Err: ${err}` });
+      res.json({ message: `Error al registrar nuevo empleado. Err: ${err}` });
     }
   }
 }
