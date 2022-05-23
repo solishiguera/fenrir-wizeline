@@ -41,7 +41,7 @@ module.exports = {
 
   addQuestion : (employeeId, departmentId, questionText, isAnonymous, askEmployeeId) => {
     if(isAnonymous) { 
-      employeeId = 404
+      employeeId = 404;
     }
 
     employeeId = isAnonymous ? 404 : employeeId; 
@@ -93,7 +93,7 @@ module.exports = {
   },
 
   updateIndexOfQuestions:() =>{
-    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text) WHERE full_text_search is null'
+    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text)'
     return new Promise((resolve, reject) => {
       pool.query(sql,(err,res)=>{
         if(err){
