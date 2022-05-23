@@ -38,6 +38,17 @@ module.exports = {
     }
   },
 
+  getEmployeesByQuery:async ( req, res, next ) => {
+    try {
+      const employees = await UserServices.getEmployeesByQuery(req.params.text);
+      res.json({ employees });
+    }
+    catch ( err ) {
+      res.json({message:`Error al realizar tu búsqueda. Intentalo de nuevo. Error: ${err}`})
+    }
+  },
+
+
   deleteEmployee: async (req, res, next) => {
     try {
       const user = await UserServices.deleteEmployee(req.params.id);
