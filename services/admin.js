@@ -6,7 +6,13 @@ const EmployeeModel = require('../model/employee');
 module.exports = { 
   getAllEmployees : async () => {
     try {
-      const employees = await EmployeeModel.Employee.findAll({ attributes: {exclude: ['employee_password']} });
+      const employees = await EmployeeModel.Employee.findAll({ 
+        attributes: {
+          exclude: ['employee_password', 'profile_picture', 'job_title']
+        }, 
+        order: [['username', 'ASC']] 
+      });
+      
       return employees
       
     } catch (error) {
