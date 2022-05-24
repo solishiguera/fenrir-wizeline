@@ -1,83 +1,72 @@
 const pool = require('../config/db');
 const timestamp = new Date();
+const Model = require('../model/question');
 
 module.exports = { 
-  getAllQuestions : () => {
-    sql = 'SELECT * FROM question' 
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
-  },
-
-  getQuestion : (questionId) => {
-    sql = 'SELECT * FROM question WHERE question_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
-  },
-  getQuestionWithId : (userId) => {
-    sql = 'SELECT * FROM question WHERE employee_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[userId], (err, res) => {
-        if(err) {
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
-  }
-
-  ,
-
-  addQuestion : (employeeId, departmentId, questionText, isAnonymous, askEmployeeId) => {
-    if(isAnonymous) { 
-      employeeId = 404;
+  getAllQuestions : async () => {
+    try {
+      const questions = await Model.Question.findAll()
+      return questions
+    } catch (error) {
+      console.log(`Error al obtener username: Error: ${error}`)
     }
-
-    employeeId = isAnonymous ? 404 : employeeId; 
-    sql = 'INSERT INTO question(employee_id, department_id, question_text, is_anonymous, date_created, date_last_modified, like_count, comment_count, is_answered, ask_employee_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeId, departmentId, questionText, isAnonymous, timestamp, timestamp, 0, 0, 0, askEmployeeId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
   },
 
-  updateQuestion : (questionId, questionText) => {
-    sql = 'UPDATE question question_text SET question_text = $1, date_last_modified = $2 WHERE question_id = $3'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionText, timestamp, questionId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+  getQuestion : async (questionId) => {
+    try {
+      const question = await Model.Question.findOne({ where: { question_id: questionId } })
+      return question
+    } catch (error) {
+      console.log(`Error al obtener username: Error: ${error}`)
+    }
+  },
+
+  addQuestion : async (employeeId, departmentId, questionText, isAnonymous, askEmployeeId) => {
+    employeeId = isAnonymous ? 404 : employeeId;
+
+    try {
+      await Model.Question.create({
+        employee_id: employeeId,
+        department_id: departmentId,
+        question_text: questionText,
+        is_anonymous: isAnonymous,
+        date_created: timestamp,
+        date_last_modified: timestamp,
+        like_count: 0,
+        comment_count: 0,
+        is_answered: false, 
+        ask_employee_id: askEmployeeId
       })
-    })
+    } catch (error) {
+      console.log(`Error al agregar pregunta: Error: ${error}`)
+    }
+    
+  },
+
+  updateQuestion : async (questionId, questionText) => {
+    try {
+      await Model.Question.update({ question_text: questionText }, {
+        where: {
+          question_id: questionId
+        }
+      });
+    } catch (error) { 
+      console.log(`Error al actualizar pregunta: Error: ${error}`)
+    }
+    
   }, 
 
-  deleteQuestion : (questionId) => {
-    sql = 'DELETE FROM question WHERE question_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[questionId], (err, res) => {
-        if(err) { 
-          return reject(err)
+  deleteQuestion : async (questionId) => {
+    try {
+      await Model.Question.destroy({
+        where: {
+          quesrtion_id: questionId
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) {
+      console.log(`Error al eliminar pregunta: error: ${error}`)
+    }
+
   },
 
   getQuestionsByQuery:(search) =>{

@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = require('../config/db2');
 
 module.exports = {
   Question : sequelize.define('question', {
@@ -30,11 +30,11 @@ module.exports = {
     }, 
 
     date_created: {
-      type: DataTypes.timestamps
+      type: DataTypes.DATE
     },
 
     date_last_modified: {
-      type: DataTypes.timestamps
+      type: DataTypes.DATE
     }, 
 
     like_count: { 
