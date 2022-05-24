@@ -1,17 +1,17 @@
 const pool = require('../config/db');
 const timestamp = new Date();
+const model = require('../model/employee');
 
 module.exports = { 
-    getAllEmployees : () => {
-    sql = 'SELECT employee_id, username, employee_name, employee_last_name, department_id, is_admin FROM employee ORDER BY employee_name ASC'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  getAllEmployees : async () => {
+    try {
+      const employees = await model.Employee.findAll();
+      console.log(employees)
+      return employees
+      
+    } catch (error) {
+      console.error(error)
+    }
   },
 
   markAsAnswer : (commentId, isAnswer) => {
