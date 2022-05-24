@@ -1,12 +1,12 @@
 const pool = require('../config/db');
 const timestamp = new Date();
-const model = require('../model/employee');
+const CommentModel = require('../model/comment');
+const EmployeeModel = require('../model/employee');
 
 module.exports = { 
   getAllEmployees : async () => {
     try {
-      const employees = await model.Employee.findAll();
-      console.log(employees)
+      const employees = await EmployeeModel.Employee.findAll({ attributes: {exclude: ['employee_password']} });
       return employees
       
     } catch (error) {
@@ -14,28 +14,30 @@ module.exports = {
     }
   },
 
-  markAsAnswer : (commentId, isAnswer) => {
-    sql = 'UPDATE comment is_answer SET is_answer = $2 WHERE comment_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[commentId, isAnswer], (err, res) => {
-        if(err) { 
-          return reject(err)
+  markAsAnswer : async (commentId, isAnswer) => {
+    try {
+      await CommentModel.Comment.update({ is_answer: isAnswer }, {
+        where: {
+          comment_id: commentId
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al actualizar comentario: Error: ${error}`)
+    }
+
   }, 
 
-  markAsAdmin : (employeeId, isAdmin) => {
-    sql = 'UPDATE employee is_admin SET is_admin = $2 WHERE employee_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeId, isAdmin], (err, res) => {
-        if(err) { 
-          return reject(err)
+  markAsAdmin : async (employeeId, isAdmin) => {
+    try {
+      await Model.Comment.update({ is_admin: isAdmin }, {
+        where: {
+          employee_id: employeeId
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al actualizar empleado: Error: ${error}`)
+    }
+    
   }, 
 }
 
