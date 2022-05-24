@@ -45,7 +45,7 @@ module.exports = {
 
   updateQuestion : async (questionId, questionText) => {
     try {
-      await Model.Question.update({ question_text: questionText }, {
+      await Model.Question.update({ question_text: questionText,  date_last_modified: timestamp }, {
         where: {
           question_id: questionId
         }
@@ -60,7 +60,7 @@ module.exports = {
     try {
       await Model.Question.destroy({
         where: {
-          quesrtion_id: questionId
+          question_id: questionId
         }
       });
     } catch (error) {
