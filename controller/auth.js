@@ -1,5 +1,4 @@
 const AuthServices = require("../services/auth");
-const pool = require("../config/db");
 const SecureEnv = require("../config/security/security");
 
 module.exports = { 

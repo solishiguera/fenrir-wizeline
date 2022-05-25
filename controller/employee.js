@@ -1,4 +1,4 @@
-const UserServices = require("../services/employee");
+const EmployeeServices = require("../services/employee");
 const SecureEnv = require("../config/security/security");
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
   */
   updateEmployee: async (req, res, next) => {
     try {
-      const employee = await UserServices.updateEmployee(req.params.id, req.body.is_admin);
+      const employee = await EmployeeServices.updateEmployee(req.params.id, req.body.is_admin);
       res.json("Empleado actualizado correctamente!");
     } catch (err) {
       res.json({ message: `Error al actualizar empleado. Err: ${err}` });
@@ -16,7 +16,7 @@ module.exports = {
 
   deleteEmployee: async (req, res, next) => {
     try {
-      const user = await UserServices.deleteEmployee(req.params.id);
+      const user = await EmployeeServices.deleteEmployee(req.params.id);
       res.json("Eliminado correctamente!");
     } catch (err) {
       res.json({ message: `Error al eliminar empleado. Err: ${err}` })

@@ -1,4 +1,4 @@
-const sequelize = require('../config/db2');
+const sequelize = require('../config/db');
 const timestamp = new Date();
 const Model = require('../model/question');
 const { Op } = require("sequelize");

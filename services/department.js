@@ -1,8 +1,8 @@
 const pool = require('../config/db');
 const DepartmentModel = require('../model/department');
-//findAll -> select * 
+
 module.exports = { 
-  getDepartments : () => { 
+  getDepartments : async () => { 
     try{
       const departments = await DepartmentModel.Department.findAll();
       return departments;
@@ -11,7 +11,7 @@ module.exports = {
     }
   },
 
-  getDepartment : (deptId) => { 
+  getDepartment : async (deptId) => { 
     try{
       const department = await DepartmentModel.Department.findOne({
         where: {department_id: deptId}
@@ -22,7 +22,7 @@ module.exports = {
     }
   },
 
-  addDepartment : (deptName) => { 
+  addDepartment : async (deptName) => { 
     try{
       await DepartmentModel.Department.create({
         department_name: deptName,
@@ -33,7 +33,7 @@ module.exports = {
     }
   },
 
-  updateDepartment : (deptId, isActive, deptName) => { 
+  updateDepartment : async (deptId, isActive, deptName) => { 
     try{
       await DepartmentModel.Department.update({
         is_Active: isActive,
@@ -48,7 +48,7 @@ module.exports = {
     }
   },
 
-  deleteDepartment : (deptId) => { 
+  deleteDepartment : async (deptId) => { 
     try{
       await DepartmentModel.Department.destroy({
         where: {

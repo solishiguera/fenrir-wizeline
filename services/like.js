@@ -1,9 +1,9 @@
-const { Model } = require('sequelize/types');
 const pool = require('../config/db');
 const LikeModel = require('../model/likes');
+const QuestionModel = require('../model/question')
 
 module.exports = { 
-    addLike : (empId, questionId, username) => {
+    addLike : async (empId, questionId, username) => {
       try{
         await LikeModel.Like.create({
           employee_id: empId,
@@ -15,7 +15,7 @@ module.exports = {
     }
   }, 
 
-  getQuestionLikes : (questionId) => { 
+  getQuestionLikes : async (questionId) => { 
     try{
       const questionLikes = await LikeModel.Like.findOne({
         where: {question_id: questionId}
@@ -26,7 +26,7 @@ module.exports = {
     }
   }, 
   
-  getEmployeeLikes : (empId) => { 
+  getEmployeeLikes : async (empId) => { 
     try{
       await LikeModel.Like.findAll({
         where:{
@@ -34,7 +34,7 @@ module.exports = {
         },
         attributes: ['question_id'],
         include:{
-          model: Model,
+          model: QuestionModel.Question,
           attributes: ['question_text']
         }
       })
@@ -43,7 +43,7 @@ module.exports = {
     }
   },
 
-  removeLike : (questionId, empId) => { 
+  removeLike : async (questionId, empId) => { 
     try{
       await LikeModel.Like.destroy({
         where: {

@@ -13,7 +13,7 @@ module.exports = {
     
   },
 
-  saveRefreshToken : (token, username) => { 
+  saveRefreshToken : async (token, username) => { 
     try{
       await TokenModel.Token.create({
         username: username, 
@@ -26,7 +26,7 @@ module.exports = {
     }
   },
 
-  deleteRefreshToken : (token) => {
+  deleteRefreshToken : async (token) => {
     try{
       await TokenModel.Token.destroy({
         where:{
@@ -38,7 +38,7 @@ module.exports = {
     }
   }, 
 
-  signup : (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
+  signup : async (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
     if(deptId == null) { 
       deptId = 101
     }
@@ -53,7 +53,7 @@ module.exports = {
         username:username, 
         employee_password: employeePassword
       })
-    }catch (error) { 
+    } catch (error) { 
       console.log(`Error al hacer signup: Error: ${error}`)
     }
   }

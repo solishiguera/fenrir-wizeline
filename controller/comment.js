@@ -1,5 +1,4 @@
 const UserServices = require("../services/comment");
-const pool = require("../config/db");
 module.exports = {
 
     addComment: async (req, res, next) => {
