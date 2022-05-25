@@ -1,52 +1,59 @@
+const { Model } = require('sequelize/types');
 const pool = require('../config/db');
+const LikeModel = require('../model/likes');
 
 module.exports = { 
     addLike : (empId, questionId, username) => {
-    sql = 'INSERT INTO likes(employee_id, question_id, username) VALUES($1, $2, $3);'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [empId, questionId, username], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+      try{
+        await LikeModel.Like.create({
+          employee_id: empId,
+          question_id: questionId,
+          username: username
+        })
+      }catch (error) {
+      console.log(`Error al agregar like: Error: ${error}`)
+    }
   }, 
 
   getQuestionLikes : (questionId) => { 
-    sql = 'SELECT question_id, employee_id, username FROM likes WHERE question_id = $1;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [questionId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+    try{
+      const questionLikes = await LikeModel.Like.findOne({
+        where: {question_id: questionId}
       })
-    })
+      return questionLikes;
+    }catch (error) {
+      console.log(`Error al obtener likes de la pregunta: Error: ${error}`)
+    }
   }, 
   
   getEmployeeLikes : (empId) => { 
-    sql = 'SELECT l.question_id, q.question_text FROM likes l JOIN question q ON l.question_id = q.question_id WHERE l.employee_id = $1;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [empId], (err, res) => {
-        if(err) { 
-          return reject(err)
+    try{
+      await LikeModel.Like.findAll({
+        where:{
+          employee_id: empId
+        },
+        attributes: ['question_id'],
+        include:{
+          model: Model,
+          attributes: ['question_text']
         }
-        return resolve(res.rows)
       })
-    })
+    }catch (error) {
+      console.log(`Error al obtener los likes de empleados: Error: ${error}`)
+    }
   },
 
   removeLike : (questionId, empId) => { 
-    sql = 'DELETE FROM likes WHERE question_id = $1 AND employee_id = $2;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [questionId, empId], (err, res) => {
-        if(err) { 
-          return reject(err)
+    try{
+      await LikeModel.Like.destroy({
+        where: {
+          question_id: questionId,
+          employee_id: empId
         }
-        return resolve(res.rows)
       })
-    })
+    }catch (error) {
+      console.log(`Error al eliminar pregunta: error: ${error}`)
+    }
   }
 }
 
