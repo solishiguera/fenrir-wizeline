@@ -115,7 +115,7 @@ CREATE OR REPLACE TRIGGER update_like_count
   EXECUTE PROCEDURE increment_like_count_trigger();
 
 -- ~~~~~~~~~
-
+-- It works!
 CREATE OR REPLACE FUNCTION decrement_like_count_trigger()
   RETURNS trigger AS
 $$
