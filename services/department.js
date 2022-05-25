@@ -1,10 +1,20 @@
 const pool = require('../config/db');
 const DepartmentModel = require('../model/department');
+const { Op } = require("sequelize");
 
 module.exports = { 
   getDepartments : async () => { 
     try{
-      const departments = await DepartmentModel.Department.findAll();
+      const departments = await DepartmentModel.Department.findAll({ 
+        where: {
+          department_id : {
+            [Op.notIn]: [101, 404]
+          }, 
+          is_active: {
+            [Op.not]: false
+          }
+        } 
+      });
       return departments;
     }catch(error){
       console.log(`Error al obtener los departamentos: Error: ${error}`);
@@ -26,7 +36,7 @@ module.exports = {
     try{
       await DepartmentModel.Department.create({
         department_name: deptName,
-        is_Active: true
+        is_active: true
       })
     }catch(error){
       console.log(`Error al agregar departamento: Error: ${error}`);
@@ -36,8 +46,9 @@ module.exports = {
   updateDepartment : async (deptId, isActive, deptName) => { 
     try{
       await DepartmentModel.Department.update({
-        is_Active: isActive,
-        department_name: deptName
+        department_id: deptId,
+        department_name: deptName,
+        is_active: isActive
       },
       {where: {
         department_id: deptId
