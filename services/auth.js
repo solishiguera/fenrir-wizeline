@@ -1,3 +1,4 @@
+const { user } = require('pg/lib/defaults');
 const pool = require('../config/db');
 const timestamp = new Date();
 const Model = require('../model/employee');
@@ -30,7 +31,7 @@ module.exports = {
     try{
       await TokenModel.Token.destroy({
         where:{
-          token_id: token
+          token: token
         }
       })
     }catch (error) {
@@ -42,8 +43,9 @@ module.exports = {
     if(deptId == null) { 
       deptId = 101
     }
+
     try{
-      await Model.Employee.create({
+      const employee = await Model.Employee.create({
         employee_name: employeeName,
         employee_last_name: employeeLastName,
         department_id: deptId, 
@@ -53,6 +55,8 @@ module.exports = {
         username:username, 
         employee_password: employeePassword
       })
+
+      return employee
     } catch (error) { 
       console.log(`Error al hacer signup: Error: ${error}`)
     }

@@ -29,7 +29,7 @@ module.exports = {
 
   logout : async (req, res, next) => {
     const deleteToken = AuthServices.deleteRefreshToken(req.body.refreshToken)
-    res.send(204)
+    res.sendStatus(204)
   },
 
   token : async (req, res, next) => {
@@ -40,9 +40,10 @@ module.exports = {
     try {
       const securePsw = await SecureEnv.securePassword(req.body.employee_password);
       const employee = await AuthServices.signup(req.body.employee_name, req.body.employee_last_name, req.body.department_id, req.body.job_title, req.body.username, securePsw);
+      console.log(employee)
       const accessToken = SecureEnv.generateAccessToken(employee)
       const refreshToken = SecureEnv.generateRefreshToken(employee)
-      const save = AuthServices.saveRefreshToken(refreshToken, employee[0]['username'])
+      const save = AuthServices.saveRefreshToken(refreshToken, employee['username'])
 
       res.json({accessToken, refreshToken}) 
     } catch (err) {
