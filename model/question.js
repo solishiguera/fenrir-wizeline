@@ -51,6 +51,10 @@ module.exports = {
 
     ask_employee_id: {
       type: DataTypes.INTEGER
+    }, 
+
+    full_text_search: {
+      type: DataTypes.TSVECTOR
     }
   }, 
   {

@@ -1,6 +1,7 @@
-const pool = require('../config/db');
+const sequelize = require('../config/db2');
 const timestamp = new Date();
 const Model = require('../model/question');
+const { Op } = require("sequelize");
 
 module.exports = { 
   getAllQuestions : async () => {
@@ -45,7 +46,10 @@ module.exports = {
 
   updateQuestion : async (questionId, questionText) => {
     try {
-      await Model.Question.update({ question_text: questionText,  date_last_modified: timestamp }, {
+      await Model.Question.update({ 
+        question_text: questionText,  date_last_modified: timestamp 
+      }, 
+      {
         where: {
           question_id: questionId
         }
@@ -69,28 +73,32 @@ module.exports = {
 
   },
 
-  getQuestionsByQuery:(search) =>{
-    sql = 'SELECT * FROM question WHERE full_text_search @@ to_tsquery($1)'
-    return new Promise((resolve, reject) => {
-      pool.query(sql,[search],(err,res)=>{
-        if(err){
-          return reject(err)
-        }
-        return resolve(res.rows)
+  getQuestionsByQuery: async (search) => {
+    try {
+      const questions = await Model.Question.findAll({
+          where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
       })
-    })
+      return questions
+    } catch (error) {
+      console.log(`Error al obtener preguntas: Error: ${error}`)
+    }
+
+    // 'SELECT * FROM question WHERE full_text_search @@ to_tsquery($1)'
   },
 
-  updateIndexOfQuestions:() =>{
-    sql = 'UPDATE question SET full_text_search = (to_tsvector(question_text)'
-    return new Promise((resolve, reject) => {
-      pool.query(sql,(err,res)=>{
-        if(err){
-          return reject(err)
+  updateIndexOfQuestions: async () => {
+    try {
+      await Model.Question.update({ 
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('question_text'))
+      }, 
+      { 
+        where: {
+          full_text_search: null
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al agregar índices pregunta: Error: ${error}`)
+    }
   },
 
 }
