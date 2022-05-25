@@ -22,8 +22,8 @@ module.exports = {
 
     getCommentWithId : async (req, res, next) => {
         try{
-            const comments = await UserServices.getCommentWithId(req.params.id);
-            res.json({comments});
+            const comment = await UserServices.getCommentWithId(req.params.id);
+            res.json({comment});
         }catch(err){
             res.json({message:`Error al obtener comentario con ID. Err: ${err}`})
         }
