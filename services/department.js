@@ -1,64 +1,63 @@
 const pool = require('../config/db');
-
+const DepartmentModel = require('../model/department');
+//findAll -> select * 
 module.exports = { 
   getDepartments : () => { 
-    sql = 'SELECT * FROM department d WHERE d.is_active = TRUE AND d.department_id != 404 AND d.department_id != 101'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+    try{
+      const departments = await DepartmentModel.Department.findAll();
+      return departments;
+    }catch(error){
+      console.log(`Error al obtener los departamentos: Error: ${error}`);
+    }
   },
 
   getDepartment : (deptId) => { 
-    sql = 'SELECT * FROM department WHERE department_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [deptId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+    try{
+      const department = await DepartmentModel.Department.findOne({
+        where: {department_id: deptId}
       })
-    })
+      return department;
+    }catch(error){
+      console.log(`Error al obtener el departamento: Error: ${error}`);
+    }
   },
 
   addDepartment : (deptName) => { 
-    sql = 'INSERT INTO department(department_name, is_active) VALUES($1, TRUE)'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [deptName] ,(err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+    try{
+      await DepartmentModel.Department.create({
+        department_name: deptName,
+        is_Active: true
       })
-    })
+    }catch(error){
+      console.log(`Error al agregar departamento: Error: ${error}`);
+    }
   },
 
   updateDepartment : (deptId, isActive, deptName) => { 
-    sql = 'UPDATE department SET is_active = $1, department_name = $2 WHERE department_id = $3'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [isActive, deptName, deptId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+    try{
+      await DepartmentModel.Department.update({
+        is_Active: isActive,
+        department_name: deptName
+      },
+      {where: {
+        department_id: deptId
+      }
       })
-    })
+    }catch (error) { 
+      console.log(`Error al actualizar departamento: Error: ${error}`)
+    }
   },
 
   deleteDepartment : (deptId) => { 
-    sql = 'DELETE FROM department WHERE department_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [deptId], (err, res) => {
-        if(err) { 
-          return reject(err)
+    try{
+      await DepartmentModel.Department.destroy({
+        where: {
+          department_id: deptId
         }
-        return resolve(res.rows)
       })
-    })
+    }catch (error) {
+      console.log(`Error al eliminar departamento: error: ${error}`)
+    }
   }
 
 };
