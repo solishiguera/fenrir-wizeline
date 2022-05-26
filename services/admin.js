@@ -1,41 +1,49 @@
 const pool = require('../config/db');
 const timestamp = new Date();
+const CommentModel = require('../model/comment');
+const EmployeeModel = require('../model/employee');
 
 module.exports = { 
-    getAllEmployees : () => {
-    sql = 'SELECT employee_id, username, employee_name, employee_last_name, department_id, is_admin FROM employee ORDER BY employee_name ASC'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  getAllEmployees : async () => {
+    try {
+      const employees = await EmployeeModel.Employee.findAll({ 
+        attributes: {
+          exclude: ['employee_password', 'profile_picture', 'job_title']
+        }, 
+        order: [['username', 'ASC']] 
+      });
+      
+      return employees
+      
+    } catch (error) {
+      console.error(error)
+    }
   },
 
-  markAsAnswer : (commentId, isAnswer) => {
-    sql = 'UPDATE comment is_answer SET is_answer = $2 WHERE comment_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[commentId, isAnswer], (err, res) => {
-        if(err) { 
-          return reject(err)
+  markAsAnswer : async (commentId, isAnswer) => {
+    try {
+      await CommentModel.Comment.update({ is_answer: isAnswer }, {
+        where: {
+          comment_id: commentId
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al actualizar comentario: Error: ${error}`)
+    }
+
   }, 
 
-  markAsAdmin : (employeeId, isAdmin) => {
-    sql = 'UPDATE employee is_admin SET is_admin = $2 WHERE employee_id = $1'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeId, isAdmin], (err, res) => {
-        if(err) { 
-          return reject(err)
+  markAsAdmin : async (employeeId, isAdmin) => {
+    try {
+      await Model.Comment.update({ is_admin: isAdmin }, {
+        where: {
+          employee_id: employeeId
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al actualizar empleado: Error: ${error}`)
+    }
+    
   }, 
 }
 

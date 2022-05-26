@@ -4,8 +4,8 @@ const userControllers = require('../controller/like')
 
 router.post('/', userControllers.addLike);
 router.get('/question/:id', userControllers.getQuestionLikes);
-router.get('/employee/:id', userControllers.getEmployeeLikes);
 router.delete('/', userControllers.removeLike);
+//router.get('/employee/:id', userControllers.getEmployeeLikes);
 
 
 module.exports = router;

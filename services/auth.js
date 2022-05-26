@@ -1,56 +1,65 @@
+const { user } = require('pg/lib/defaults');
 const pool = require('../config/db');
 const timestamp = new Date();
-
+const Model = require('../model/employee');
+const TokenModel = require('../model/token');
 module.exports = { 
-  login : (username) => {
-    sql = "SELECT * from employee WHERE username = $1"
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[username], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+  login : async (username) => {
+    try {
+      const employee = await Model.Employee.findOne({ where: { username: username } })
+      return employee;
+    } catch (error) {
+      console.log(`Error al obtener username: Error: ${error}`)
+    }
+    
   },
 
-  saveRefreshToken : (token, username) => { 
-    sql = "INSERT INTO token(username, token, date_created, expiration_date) VALUES($1, $2, $3, $4);"
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[username, token, timestamp, null], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+  saveRefreshToken : async (token, username) => { 
+    try{
+      await TokenModel.Token.create({
+        username: username, 
+        token: token, 
+        date_created: timestamp, 
+        expiration_date: null
       })
-    })
+    }catch (error) {
+      console.log(`Error al agregar token: Error: ${error}`)
+    }
   },
 
-  deleteRefreshToken : (token) => {
-    sql = "DELETE FROM token WHERE token = $1;"
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[token], (err, res) => {
-        if(err) { 
-          return reject(err)
+  deleteRefreshToken : async (token) => {
+    try{
+      await TokenModel.Token.destroy({
+        where:{
+          token: token
         }
-        return resolve(res.rows)
       })
-    })
+    }catch (error) {
+      console.log(`Error al eliminar token: error: ${error}`)
+    }
   }, 
 
-  signup : (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
+  signup : async (employeeName, employeeLastName, deptId, jobTitle, username, employeePassword) => {
     if(deptId == null) { 
       deptId = 101
     }
 
-    sql = 'INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture, username, employee_password) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql,[employeeName, employeeLastName, deptId, "false", jobTitle, null, username, employeePassword], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+    try{
+      const employee = await Model.Employee.create({
+        employee_name: employeeName,
+        employee_last_name: employeeLastName,
+        department_id: deptId, 
+        is_admin: false, 
+        job_title: jobTitle, 
+        profile_picture: null, 
+        username:username, 
+        employee_password: employeePassword
       })
-    })
-  },
+
+      return employee
+    } catch (error) { 
+      console.log(`Error al hacer signup: Error: ${error}`)
+    }
+  }
+    
 }

@@ -1,52 +1,69 @@
 const pool = require('../config/db');
+const LikeModel = require('../model/likes');
+const QuestionModel = require('../model/question')
 
 module.exports = { 
-    addLike : (empId, questionId, username) => {
-    sql = 'INSERT INTO likes(employee_id, question_id, username) VALUES($1, $2, $3);'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [empId, questionId, username], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
+    addLike : async (empId, questionId, username) => {
+      try {
+        await LikeModel.Like.create({
+          employee_id: empId,
+          question_id: questionId,
+          username: username
+        })
+      }catch (error) {
+      console.log(`Error al agregar like addLike: Error: ${error}`)
+    }
   }, 
 
-  getQuestionLikes : (questionId) => { 
-    sql = 'SELECT question_id, employee_id, username FROM likes WHERE question_id = $1;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [questionId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+  getQuestionLikes : async (questionId) => { 
+    try{
+      const questionLikes = await LikeModel.Like.findAll({
+        where: {question_id: questionId},
+        attributes: ['question_id', 'employee_id']
       })
-    })
+      return questionLikes;
+    }catch (error) {
+      console.log(`Error al obtener likes de la pregunta: Error: ${error}`)
+    }
   }, 
   
-  getEmployeeLikes : (empId) => { 
-    sql = 'SELECT l.question_id, q.question_text FROM likes l JOIN question q ON l.question_id = q.question_id WHERE l.employee_id = $1;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [empId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
-      })
-    })
-  },
+  /* REVIEW! Not working!
+  getEmployeeLikes : async (empId) => { 
+    try{
+      QuestionModel.Question.hasMany(LikeModel.Like, {
+        foreignKey: 'question_id'
+      });
+      LikeModel.Like.belongsTo(QuestionModel.Question);
 
-  removeLike : (questionId, empId) => { 
-    sql = 'DELETE FROM likes WHERE question_id = $1 AND employee_id = $2;'
-    return new Promise( (resolve, reject) => {
-      pool.query(sql, [questionId, empId], (err, res) => {
-        if(err) { 
-          return reject(err)
-        }
-        return resolve(res.rows)
+      await LikeModel.Like.findAll({
+        where: {
+          employee_id: empId
+      },
+      attributes: {
+          include: ['employee_id']
+      },
+      include: {
+          model: QuestionModel.Question,
+          attributes:['question_text']
+      }
       })
-    })
+    } catch (error) {
+      console.log(`Error al obtener los likes de empleados: Error: ${error}`)
+    }
+  },
+  */
+
+  removeLike : async (questionId, empId) => { 
+    try{
+      await LikeModel.Like.destroy({
+        where: {
+          question_id: questionId,
+          employee_id: empId
+        }
+      })
+    }catch (error) {
+      console.log(`Error al eliminar pregunta: error: ${error}`)
+    }
   }
 }
 

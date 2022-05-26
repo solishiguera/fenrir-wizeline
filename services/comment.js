@@ -1,44 +1,45 @@
-const pool = require('../config/db');
+const pool = require("../config/db");
 const timestamp = new Date();
+const Model = require("../model/comment");
+const { Employee } = require("../model/employee");
 
-module.exports ={
-    addComment : (employeeId, question_id, comment_text, isAnonymous) => {
-        if(isAnonymous) {
-            employeeId = 404
-        }
-        sql = 'INSERT INTO comment(employee_id, question_id, comment_text, date_created, is_answer, is_anonymous ) VALUES ($1,$2,$3,$4,$5,$6)'
-        return new Promise( (resolve, reject) => {
-            pool.query(sql,[employeeId,question_id,comment_text, timestamp, 0, isAnonymous], (err, res) => {
-                if(err) {
-                    return reject(err)
-                }
-                return resolve(res.rows)
-            })
-        })
-    },
+module.exports = {
+  addComment: async (employeeId, questionId, commentText, isAnonymous) => {
+    employeeId = isAnonymous ? 404 : employeeId;
 
-    getCommentsQuestion : (question_id) => {
-        sql = 'SELECT * FROM comment WHERE question_id = $1'
-        return new Promise((resolve, reject) => {
-            pool.query(sql,[question_id], (err, res) => {
-                if(err){
-                    return reject(err)
-                }
-                return resolve(res.rows)
-            })
-        })
-    },
-    getCommentWithId : (comment_id) => {
-        sql = 'SELECT * FROM comment WHERE comment_id = $1'
-        return new Promise((resolve, reject) => {
-            pool.query(sql,[comment_id],(err,res) => {
-                if(err){
-                    return reject(err)
-                }
-                return resolve(res.rows)
-            })
-        })
+    try {
+      await Model.Comment.create({
+        employee_id: employeeId,
+        question_id: questionId,
+        comment_text: commentText,
+        date_created: timestamp,
+        is_answer: false,
+        is_anonymous: isAnonymous
+      });
+    } catch (error) {
+      console.log(`Error al agregar pregunta: Error: ${error}`);
     }
+  },
 
+  getCommentsQuestion: async (questionId) => {
+    try {
+      const comments = await Model.Comment.findAll({
+        where: { question_id: questionId }
+      });
+      return comments;
+    } catch (error) {
+      console.log(`Error al obtener comentarios de pregunta: Error: ${error}`);
+    }
+  },
 
-}
+  getCommentWithId: async (commentId) => {
+    try {
+        const comment = await Model.Comment.findAll({
+        where: { comment_id: commentId }
+        })
+        return comment;
+    } catch (error) {
+    console.log(`Error al obtener comentario: Error: ${error}`);
+    }
+  }
+};
