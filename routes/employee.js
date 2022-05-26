@@ -4,6 +4,7 @@ const userControllers = require('../controller/employee')
 const SecureEnv = require('../config/security/security')
 
 router.put('/:id', SecureEnv.authenticateToken, userControllers.updateEmployee)
+router.get('/search/:text', userControllers.getEmployeesByQuery)
 router.delete('/:id', SecureEnv.authenticateToken, userControllers.deleteEmployee)
 
 module.exports = router;
