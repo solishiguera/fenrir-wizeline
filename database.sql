@@ -16,7 +16,7 @@ CREATE TABLE employee(
   profile_picture VARCHAR(255),
   username VARCHAR(128) UNIQUE,
   employee_password VARCHAR(128),
-  tsvector full_text_search,
+  full_text_search tsvector,
   CONSTRAINT fk_department_id 
    FOREIGN KEY (department_id) 
      REFERENCES department(department_id)
@@ -39,7 +39,7 @@ CREATE TABLE question(
   like_count INTEGER,
   comment_count INTEGER,
   is_answered BOOLEAN,
-  tsvector full_text_search
+  full_text_search tsvector
 );
 
 CREATE TABLE likes(  
@@ -108,7 +108,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE TRIGGER update_like_count
+CREATE TRIGGER update_like_count
   AFTER INSERT
   ON likes
   FOR EACH ROW 
@@ -128,7 +128,7 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE TRIGGER update_decrement_like_count
+CREATE TRIGGER update_decrement_like_count
   AFTER DELETE
   ON likes
   FOR EACH ROW 
