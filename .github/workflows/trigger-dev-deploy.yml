@@ -15,7 +15,7 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       stage: development
-      node-version: '16.13.1'
+      node-version: "16.13.1"
     secrets:
       PIPELINE_AWS_ACCESS_KEY_ID: ${{ secrets.PIPELINE_AWS_ACCESS_KEY_ID }}
       PIPELINE_AWS_SECRET_ACCESS_KEY: ${{ secrets.PIPELINE_AWS_SECRET_ACCESS_KEY }}
@@ -23,5 +23,6 @@ jobs:
       ENV_FILE: ${{ secrets.DEV_ENV }}
       LITESTREAM_S3_BUCKET: ${{ secrets.LITESTREAM_S3_BUCKET }}
       LITESTREAM_S3_PATH: ${{ secrets.LITESTREAM_S3_PATH }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       LITESTREAM_AWS_ACCESS_KEY_ID: ${{ secrets.LITESTREAM_AWS_ACCESS_KEY_ID }}
       LITESTREAM_AWS_SECRET_ACCESS_KEY: ${{ secrets.LITESTREAM_AWS_SECRET_ACCESS_KEY }}
