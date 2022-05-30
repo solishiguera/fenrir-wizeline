@@ -16,7 +16,7 @@ module.exports = {
 
   getEmployeesByQuery:async ( req, res, next ) => {
     try {
-      const employees = await UserServices.getEmployeesByQuery(req.params.text);
+      const employees = await EmployeeServices.getEmployeesByQuery(req.params.text);
       res.json({ employees });
     }
     catch ( err ) {
