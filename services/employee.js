@@ -18,28 +18,30 @@ module.exports = {
     }
   }, 
   
-  getEmployeesByQuery:(search) =>{
-    sql = 'SELECT * FROM employee WHERE full_text_search @@ to_tsquery($1)'
-    return new Promise((resolve, reject) => {
-      pool.query(sql,[search],(err,res)=>{
-        if(err){
-          return reject(err)
-        }
-        return resolve(res.rows)
+  getEmployeesByQuery:(search) => {
+    try {
+      const questions = await Model.Employee.findAll({
+          where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
       })
-    })
+      return questions
+    } catch (error) {
+      console.log(`Error al obtener preguntas: Error: ${error}`)
+    }
   },
 
-  updateIndexOfEmployees:() =>{
-    sql = 'UPDATE employee SET full_text_search = (to_tsvector(employee_text)) WHERE full_text_search IS null'
-    return new Promise((resolve, reject) => {
-      pool.query(sql,(err,res)=>{
-        if(err){
-          return reject(err)
+  updateIndexOfEmployees:() => {
+    try {
+      await Model.Employee.update({ 
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('full_text_search'))
+      }, 
+      { 
+        where: {
+          full_text_search: null
         }
-        return resolve(res.rows)
-      })
-    })
+      });
+    } catch (error) { 
+      console.log(`Error al agregar índices pregunta: Error: ${error}`)
+    }
   },
 
   deleteEmployee : async (employeeId) => {
