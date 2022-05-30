@@ -7,7 +7,7 @@ module.exports = {
       
       const employee = await AuthServices.login(req.body.username);
       // Si no existe usuario
-      if(Object.keys(employee).length === 0) { 
+      if(employee === null) { 
         throw 'Usuario no existe';
       }
 
@@ -19,7 +19,8 @@ module.exports = {
 
       const accessToken = SecureEnv.generateAccessToken(employee)
       const refreshToken = SecureEnv.generateRefreshToken(employee)
-      const save = AuthServices.saveRefreshToken(refreshToken, employee['username'])
+
+      AuthServices.saveRefreshToken(refreshToken, employee['username'])
 
       res.json({accessToken, refreshToken})
     } catch (err) {

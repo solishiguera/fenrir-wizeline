@@ -25,14 +25,6 @@ module.exports = {
       console.log(`Error de contraseña: ${error}`)
     }
   },
-  
-  /**
-  * @deprecated since version 2.0
-  */
-  authorizeUser : (user) => { 
-    const accessToken = jwt.sign({user}, process.env.TOKEN_SECRET)
-    return accessToken;
-  },
 
   authenticateToken : (req, res, next) => { 
     const authHeader = req.headers['authorization']
@@ -48,8 +40,9 @@ module.exports = {
     return true;
   },
 
-  generateAccessToken : (user) => { 
-    return jwt.sign({user}, process.env.TOKEN_SECRET, { expiresIn : '55m'})
+  generateAccessToken : (user) => {
+    const expiration = process.env.JWT_EXPIRATION
+    return jwt.sign({user}, process.env.TOKEN_SECRET, { expiresIn: expiration + 's' })
   }, 
 
   generateRefreshToken : (user) => { 

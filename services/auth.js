@@ -1,6 +1,5 @@
 const { user } = require('pg/lib/defaults');
 const pool = require('../config/db');
-const timestamp = new Date();
 const Model = require('../model/employee');
 const TokenModel = require('../model/token');
 module.exports = { 
@@ -15,12 +14,14 @@ module.exports = {
   },
 
   saveRefreshToken : async (token, username) => { 
-    try{
+    try {
+      let expIn = new Date();
+      expIn.setSeconds(process.env.JWT_REFRESH_EXPIRATION);
       await TokenModel.Token.create({
         username: username, 
         token: token, 
-        date_created: timestamp, 
-        expiration_date: null
+        date_created: new Date(), 
+        expiration_date: expIn
       })
     }catch (error) {
       console.log(`Error al agregar token: Error: ${error}`)
