@@ -63,8 +63,6 @@ setup_nodejs_project() {
     npm install -g pm2
     # Rename env-tmp to .env
     mv env-tmp .env
-    # Build blitz app
-    npm run build
 }
 
 setup_nginx() {
