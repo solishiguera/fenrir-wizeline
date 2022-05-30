@@ -18,7 +18,7 @@ module.exports = {
     }
   }, 
   
-  getEmployeesByQuery:(search) => {
+  getEmployeesByQuery: async (search) => {
     try {
       const questions = await Model.Employee.findAll({
           where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
@@ -29,7 +29,7 @@ module.exports = {
     }
   },
 
-  updateIndexOfEmployees:() => {
+  updateIndexOfEmployees: async () => {
     try {
       await Model.Employee.update({ 
         full_text_search: sequelize.fn('to_tsvector', sequelize.col('full_text_search'))
