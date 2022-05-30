@@ -19,7 +19,7 @@ module.exports = {
     }
   },
 
-  /*
+  
   getEmployeeLikes : async (req, res, next) => { 
     try {
       const likes = await LikeServices.getEmployeeLikes(req.params.id);
@@ -28,7 +28,7 @@ module.exports = {
       res.json({ message: `Error al obtener likes de empleado. Err: ${err}` });
     }
   },
-  */
+  
 
   removeLike : async (req, res, next) => { 
     try {

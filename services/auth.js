@@ -52,7 +52,7 @@ module.exports = {
         is_admin: false, 
         job_title: jobTitle, 
         profile_picture: null, 
-        username:username, 
+        username: username, 
         employee_password: employeePassword
       })
 

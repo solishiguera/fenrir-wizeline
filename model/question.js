@@ -16,7 +16,6 @@ module.exports = {
 
     department_id: {
       type: DataTypes.INTEGER, 
-      allowNull: false
     },
 
     question_text: { 

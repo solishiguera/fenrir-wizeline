@@ -40,10 +40,9 @@ module.exports = {
     try {
       const securePsw = await SecureEnv.securePassword(req.body.employee_password);
       const employee = await AuthServices.signup(req.body.employee_name, req.body.employee_last_name, req.body.department_id, req.body.job_title, req.body.username, securePsw);
-      console.log(employee)
       const accessToken = SecureEnv.generateAccessToken(employee)
       const refreshToken = SecureEnv.generateRefreshToken(employee)
-      const save = AuthServices.saveRefreshToken(refreshToken, employee['username'])
+      AuthServices.saveRefreshToken(refreshToken, employee['username'])
 
       res.json({accessToken, refreshToken}) 
     } catch (err) {
