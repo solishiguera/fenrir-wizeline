@@ -27,31 +27,30 @@ module.exports = {
     }
   }, 
   
-  /* REVIEW! Not working!
+   //REVIEW! Not working!
   getEmployeeLikes : async (empId) => { 
     try{
       QuestionModel.Question.hasMany(LikeModel.Like, {
         foreignKey: 'question_id'
       });
-      LikeModel.Like.belongsTo(QuestionModel.Question);
+      LikeModel.Like.belongsTo(QuestionModel.Question, {
+        foreignKey: 'question_id'
+      });
 
       await LikeModel.Like.findAll({
         where: {
           employee_id: empId
       },
-      attributes: {
-          include: ['employee_id']
-      },
       include: {
           model: QuestionModel.Question,
           attributes:['question_text']
-      }
+      },
       })
     } catch (error) {
       console.log(`Error al obtener los likes de empleados: Error: ${error}`)
     }
   },
-  */
+  
 
   removeLike : async (questionId, empId) => { 
     try{
