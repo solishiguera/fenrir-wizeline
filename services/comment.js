@@ -25,7 +25,7 @@ module.exports = {
     try {
       const comments = await Model.Comment.findAll({
         where: { question_id: questionId },
-        order: ['date_last_modified', 'DESC']
+        order: ['date_last_modified', 'ASC']
       });
       return comments;
     } catch (error) {
