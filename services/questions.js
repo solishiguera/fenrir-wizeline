@@ -7,7 +7,11 @@ module.exports = {
   getAllQuestions : async () => {
     try {
       // const questions = await Model.Question.findAll( {order: ['date_last_modified', 'ASC']} )
-      const questions = await Model.Question.findAll();
+      const questions = await Model.Question.findAll(
+        {
+          order: sequelize.col('date_last_modified'),
+        }
+      );
 
       return questions;
     } catch (error) {
