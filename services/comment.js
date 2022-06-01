@@ -23,12 +23,13 @@ module.exports = {
 
   getCommentsQuestion: async (questionId) => {
     try {
-      const comments = await Model.Comment.findAll({
+      const comments = await Model.Comment.findAll(
+        {
         where: { question_id: questionId },
-        order: sequelize.col('date_last_modified'),
+        // order: sequelize.col('date_last_modified'),
         // where: { question_id: questionId },
         // order: ['date_last_modified', 'ASC']
-      });
+        });
       return comments;
     } catch (error) {
       console.log(`Error al obtener comentarios de pregunta: Error: ${error}`);
