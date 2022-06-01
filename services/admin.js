@@ -35,7 +35,7 @@ module.exports = {
 
   markAsAdmin : async (employeeId, isAdmin) => {
     try {
-      await Model.Comment.update({ is_admin: isAdmin }, {
+      await EmployeeModel.Employee.update({ is_admin: isAdmin }, {
         where: {
           employee_id: employeeId
         }
