@@ -142,8 +142,8 @@ CREATE TABLE token(
   token_id SERIAL PRIMARY KEY,
   username VARCHAR(128) NOT NULL,
   token VARCHAR(512) NOT NULL,
-  date_created TIMESTAMP, 
-  expiration_date TIMESTAMP,
+  date_created TIMESTAMPTZ, 
+  expiration_date TIMESTAMPTZ,
   CONSTRAINT fk_username
     FOREIGN KEY (username)
       REFERENCES employee(username)

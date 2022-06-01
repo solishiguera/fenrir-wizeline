@@ -21,17 +21,15 @@ module.exports = {
         },
 
         date_created: { 
-            type : DataTypes.DATE
+            type: DataTypes.DATE
         },
 
         expiration_date: { 
-            type : DataTypes.DATE
+            type: DataTypes.DATE
         },
     }, 
     {
         timestamps: false,
-        createdAt: false,
-        updatedAt: false,
         freezeTableName: true
     })
 }
