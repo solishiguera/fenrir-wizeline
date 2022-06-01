@@ -2,6 +2,7 @@ const { user } = require('pg/lib/defaults');
 const pool = require('../config/db');
 const timestamp = new Date();
 const Model = require('../model/employee');
+const { Token } = require('../model/token');
 const TokenModel = require('../model/token');
 module.exports = { 
   login : async (username) => {
@@ -14,14 +15,30 @@ module.exports = {
     
   },
 
+  safePayload : async (username) => {
+    try {
+      const employee = await Model.Employee.findOne({ 
+        attributes: { exclude: ['employee_password', 'profile_picture'] },
+        where: { username: username }
+      })
+      return employee;
+    } catch (error) {
+      console.log(`Error al obtener username: Error: ${error}`)
+    }
+  },
+
   saveRefreshToken : async (token, username) => { 
-    try{
+    try {
+      const createdIn = new Date()
+      const expIn = new Date(createdIn.getTime() + process.env.JWT_REFRESH_EXPIRATION * 60000)
+
       await TokenModel.Token.create({
         username: username, 
         token: token, 
-        date_created: timestamp, 
-        expiration_date: null
+        date_created: createdIn, 
+        expiration_date: expIn
       })
+
     }catch (error) {
       console.log(`Error al agregar token: Error: ${error}`)
     }
@@ -52,13 +69,22 @@ module.exports = {
         is_admin: false, 
         job_title: jobTitle, 
         profile_picture: null, 
-        username: username, 
+        username:username, 
         employee_password: employeePassword
       })
 
       return employee
     } catch (error) { 
       console.log(`Error al hacer signup: Error: ${error}`)
+    }
+  }, 
+
+  validateRefreshToken : async (token) => {
+    try {
+      const refreshToken = await TokenModel.Token.findOne({ where: { token: token } })
+      return refreshToken
+    } catch (error) {
+      console.log(`Error al obtener token`)
     }
   }
     
