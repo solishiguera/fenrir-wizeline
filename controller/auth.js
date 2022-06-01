@@ -8,6 +8,8 @@ module.exports = {
     try {
       
       const employee = await AuthServices.login(req.body.username);
+      const payload = await AuthServices.safePayload(req.body.username)
+
       // Si no existe usuario
       if(employee === null) { 
         throw 'Usuario no existe';
@@ -19,8 +21,8 @@ module.exports = {
         throw 'Contraseña incorrecta';
       }
 
-      const accessToken = SecureEnv.generateAccessToken(employee)
-      const refreshToken = SecureEnv.generateRefreshToken(employee)
+      const accessToken = SecureEnv.generateAccessToken(payload)
+      const refreshToken = SecureEnv.generateRefreshToken(payload)
 
       AuthServices.saveRefreshToken(refreshToken, employee['username'])
 

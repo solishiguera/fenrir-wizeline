@@ -15,6 +15,18 @@ module.exports = {
     
   },
 
+  safePayload : async (username) => {
+    try {
+      const employee = await Model.Employee.findOne({ 
+        attributes: { exclude: ['employee_password', 'profile_picture'] },
+        where: { username: username }
+      })
+      return employee;
+    } catch (error) {
+      console.log(`Error al obtener username: Error: ${error}`)
+    }
+  },
+
   saveRefreshToken : async (token, username) => { 
     try {
       const createdIn = new Date()
