@@ -6,8 +6,10 @@ const { Op } = require("sequelize");
 module.exports = { 
   getAllQuestions : async () => {
     try {
-      const questions = await Model.Question.findAll( {order: ['date_last_modified', 'ASC']} )
-      return questions
+      // const questions = await Model.Question.findAll( {order: ['date_last_modified', 'ASC']} )
+      const questions = await Model.Question.findAll();
+
+      return questions;
     } catch (error) {
       console.log(`Error al obtener username: Error: ${error}`)
     }
