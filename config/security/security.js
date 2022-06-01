@@ -42,7 +42,7 @@ module.exports = {
 
   generateAccessToken : (user) => {
     const expiration = process.env.JWT_EXPIRATION
-    return jwt.sign({user}, process.env.TOKEN_SECRET, { expiresIn: expiration + 's' })
+    return jwt.sign({user}, process.env.TOKEN_SECRET, { expiresIn: expiration + 'm' })
   }, 
 
   generateRefreshToken : (user) => { 

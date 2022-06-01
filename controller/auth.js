@@ -1,5 +1,7 @@
 const AuthServices = require("../services/auth");
 const SecureEnv = require("../config/security/security");
+const jwt_decode = require('jwt-decode');
+const jwt = require("jsonwebtoken");
 
 module.exports = { 
   login : async (req, res, next) => {
@@ -29,12 +31,34 @@ module.exports = {
   },
 
   logout : async (req, res, next) => {
-    const deleteToken = AuthServices.deleteRefreshToken(req.body.refreshToken)
+    AuthServices.deleteRefreshToken(req.body.refreshToken)
     res.sendStatus(204)
   },
 
   token : async (req, res, next) => {
+    try {
+      const refreshToken = req.body.refreshToken
 
+      const storedToken = await AuthServices.validateRefreshToken(refreshToken)
+      if(storedToken == null) throw 'Invalid token'
+
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403)
+
+        if(new Date() > storedToken['expiration_date']) {
+          AuthServices.deleteRefreshToken(refreshToken)
+          throw 'Expired token. Please sign in again.'
+        }
+
+        // Create new access token, payload only contains id
+        const accessToken = SecureEnv.generateAccessToken({employee_id: user['user']['employee_id']})
+
+        // Return new access token and curr refresh token 
+        res.json({accessToken, refreshToken})
+      })
+    } catch (error) {
+      res.json(`Error al solicitar token: Err: ${error}`)
+    }
   },
 
   signup : async (req, res, next) => { 
