@@ -24,8 +24,9 @@ module.exports = {
   getCommentsQuestion: async (questionId) => {
     try {
       const comments = await Model.Comment.findAll({
-        where: { question_id: questionId },
-        order: ['date_last_modified', 'ASC']
+        where: { question_id: questionId }
+        // where: { question_id: questionId },
+        // order: ['date_last_modified', 'ASC']
       });
       return comments;
     } catch (error) {
