@@ -43,8 +43,10 @@ module.exports = {
 
     employee_password: {
       type: DataTypes.STRING
+    },
+    full_text_search: {
+      type: DataTypes.TSVECTOR
     }
-    
   }, 
   {
     timestamps: false,
