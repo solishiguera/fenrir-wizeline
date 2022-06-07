@@ -1,6 +1,6 @@
 const pool = require('../config/db');
-const LikeModel = require('../model/likes');
-const QuestionModel = require('../model/question')
+const LikeModel = require('../model/likes.model');
+const QuestionModel = require('../model/question.model')
 
 module.exports = { 
     addLike : async (empId, questionId, username) => {

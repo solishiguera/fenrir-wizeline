@@ -1,9 +1,8 @@
 const { user } = require('pg/lib/defaults');
 const pool = require('../config/db');
 const timestamp = new Date();
-const Model = require('../model/employee');
-const { Token } = require('../model/token');
-const TokenModel = require('../model/token');
+const Model = require('../model/employee.model');
+const TokenModel = require('../model/token.model');
 module.exports = { 
   login : async (username) => {
     try {

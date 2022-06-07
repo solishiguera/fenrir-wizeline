@@ -1,4 +1,4 @@
-const QuestionServices = require("../services/questions");
+const QuestionServices = require("../services/questions.service");
 
 module.exports = {
   getAllQuestions: async (req, res, next) => {

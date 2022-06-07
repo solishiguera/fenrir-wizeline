@@ -1,4 +1,4 @@
-const DepartmentServices = require("../services/department");
+const DepartmentServices = require("../services/department.service");
 
 module.exports = { 
   getDepartments : async (req, res, next) => {

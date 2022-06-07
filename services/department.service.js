@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const DepartmentModel = require('../model/department');
+const DepartmentModel = require('../model/department.model');
 const { Op } = require("sequelize");
 
 module.exports = { 
