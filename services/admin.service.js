@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const timestamp = new Date();
-const CommentModel = require('../model/comment');
-const EmployeeModel = require('../model/employee');
+const CommentModel = require('../model/comment.model');
+const EmployeeModel = require('../model/employee.model');
 
 module.exports = { 
   getAllEmployees : async () => {

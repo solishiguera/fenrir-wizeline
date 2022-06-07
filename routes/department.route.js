@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const DepartmentController = require('../controller/department')
+const DepartmentController = require('../controller/department.controller')
 
 router.get('/', DepartmentController.getDepartments);
 router.get('/:id', DepartmentController.getDepartment);

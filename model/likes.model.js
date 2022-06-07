@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const QuestionModel = require('../model/question')
+const QuestionModel = require('./question.model')
 
 
 module.exports = { 

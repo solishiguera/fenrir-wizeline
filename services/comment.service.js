@@ -1,7 +1,6 @@
 const pool = require("../config/db");
 const timestamp = new Date();
-const Model = require("../model/comment");
-const { Employee } = require("../model/employee");
+const Model = require("../model/comment.model");
 
 module.exports = {
   addComment: async (employeeId, questionId, commentText, isAnonymous) => {

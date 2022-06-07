@@ -1,6 +1,6 @@
 const sequelize = require('../config/db');
 const timestamp = new Date();
-const Model = require('../model/question');
+const Model = require('../model/question.model');
 const { Op } = require("sequelize");
 
 module.exports = { 

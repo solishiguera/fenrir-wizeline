@@ -1,4 +1,4 @@
-const AuthServices = require("../services/auth");
+const AuthServices = require("../services/auth.service");
 const SecureEnv = require("../config/security/security");
 const jwt_decode = require('jwt-decode');
 const jwt = require("jsonwebtoken");
