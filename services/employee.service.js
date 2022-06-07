@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 const timestamp = new Date();
-const Model = require('../model/employee');
+const Model = require('../model/employee.model');
 
 module.exports = { 
   /** 

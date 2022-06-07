@@ -1,4 +1,4 @@
-const UserServices = require("../services/comment");
+const UserServices = require("../services/comment.service");
 module.exports = {
 
     addComment: async (req, res, next) => {

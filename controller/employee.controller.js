@@ -1,4 +1,4 @@
-const EmployeeServices = require("../services/employee");
+const EmployeeServices = require("../services/employee.service");
 const SecureEnv = require("../config/security/security");
 
 module.exports = {
