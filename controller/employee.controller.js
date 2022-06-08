@@ -3,6 +3,15 @@ const SecureEnv = require("../config/security/security");
 
 module.exports = {
 
+  updateEmployee: async (req, res, next) => {
+    try {
+      const employee = await EmployeeServices.updateEmployee(req.params.id, req.body.is_admin);
+      res.json("Empleado actualizado correctamente!");
+    } catch (err) {
+      res.json({ message: `Error al actualizar empleado. Err: ${err}` });
+    }
+  },
+  
   getEmployeesByQuery:async ( req, res, next ) => {
     try {
       const employees = await EmployeeServices.getEmployeesByQuery(req.params.text);
