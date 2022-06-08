@@ -33,7 +33,7 @@ module.exports = {
   updateIndexOfEmployees: async () => {
     try {
       await Model.Employee.update({ 
-        full_text_search: sequelize.fn('to_tsvector', sequelize.col('employee_name', 'employee_last_name', 'username'))
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('username'))
       }, 
       { 
         where: {

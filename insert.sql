@@ -1,4 +1,4 @@
-INSERT INTO department(department_name, is_active) VALUES('Sowftware Engineering Interns', TRUE);
+INSERT INTO department(department_name, is_active) VALUES('Software Engineering Interns', TRUE);
 INSERT INTO department(department_id, department_name, is_active) VALUES(404, 'Anonymous', TRUE);
 
 INSERT INTO employee(employee_name, employee_last_name, department_id, is_admin, job_title, profile_picture)
