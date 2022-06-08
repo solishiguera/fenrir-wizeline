@@ -84,7 +84,7 @@ module.exports = {
       const questions = await Model.Question.findAll({
           where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
       })
-      return questions
+      return questions;
     } catch (error) {
       console.log(`Error al obtener preguntas: Error: ${error}`)
     }

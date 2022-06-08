@@ -20,10 +20,11 @@ module.exports = {
   
   getEmployeesByQuery: async (search) => {
     try {
-      const questions = await Model.Employee.findAll({
+      const employees = await Model.Employee.findAll({
           where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
-      })
-      return questions
+      });
+      updateIndexOfEmployees();
+      return employees;
     } catch (error) {
       console.log(`Error al obtener preguntas: Error: ${error}`)
     }
@@ -32,7 +33,7 @@ module.exports = {
   updateIndexOfEmployees: async () => {
     try {
       await Model.Employee.update({ 
-        full_text_search: sequelize.fn('to_tsvector', sequelize.col('full_text_search'))
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('employee_name', 'employee_last_name', 'username'))
       }, 
       { 
         where: {
@@ -43,6 +44,23 @@ module.exports = {
       console.log(`Error al agregar índices pregunta: Error: ${error}`)
     }
   },
+
+  /*
+  updateIndexOfQuestions: async () => {
+    try {
+      await Model.Question.update({ 
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('question_text'))
+      }, 
+      { 
+        where: {
+          full_text_search: null
+        }
+      });
+    } catch (error) { 
+      console.log(`Error al agregar índices pregunta: Error: ${error}`)
+    }
+  },
+  */
 
   deleteEmployee : async (employeeId) => {
     await Model.Employee.destroy({
