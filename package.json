@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/solishiguera/fenrir-wizeline.git"
   },
-  "author": "Ana Lucía Vea Téllez, Diego Solis Higuera",
+  "author": "Ana Lucía Vea Téllez, Diego Solis Higuera, Joaquín Arturo Beltrán López",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
