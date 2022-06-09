@@ -59,7 +59,6 @@ module.exports = {
   getQuestionsByQuery:async ( req, res, next ) => {
     try {
       const questions = await QuestionServices.getQuestionsByQuery(req.params.text);
-      updateIndexOfQuestions();
       res.json({ questions });
     }
     catch ( err ) {
