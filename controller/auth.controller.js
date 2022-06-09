@@ -70,7 +70,7 @@ module.exports = {
       const accessToken = SecureEnv.generateAccessToken(employee)
       const refreshToken = SecureEnv.generateRefreshToken(employee)
       AuthServices.saveRefreshToken(refreshToken, employee['username'])
-
+      AuthServices.updateIndexOfEmployees();
       res.json({accessToken, refreshToken}) 
     } catch (err) {
       res.json({ message: `Error al registrar nuevo empleado. Err: ${err}` });

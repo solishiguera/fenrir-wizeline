@@ -71,8 +71,7 @@ module.exports = {
         username:username, 
         employee_password: employeePassword
       })
-
-      this.updateIndexOfEmployees();
+      
       return employee;
     } catch (error) { 
       console.log(`Error al hacer signup: Error: ${error}`)
