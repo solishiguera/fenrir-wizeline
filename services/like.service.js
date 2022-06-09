@@ -37,7 +37,7 @@ module.exports = {
         foreignKey: 'question_id'
       });
 
-      await LikeModel.Like.findAll({
+      const likes = await LikeModel.Like.findAll({
         where: {
           employee_id: empId
       },
@@ -46,6 +46,8 @@ module.exports = {
           attributes:['question_text']
       },
       })
+
+      return likes
     } catch (error) {
       console.log(`Error al obtener los likes de empleados: Error: ${error}`)
     }
