@@ -72,11 +72,27 @@ module.exports = {
         employee_password: employeePassword
       })
 
-      return employee
+      this.updateIndexOfEmployees();
+      return employee;
     } catch (error) { 
       console.log(`Error al hacer signup: Error: ${error}`)
     }
-  }, 
+  },
+
+  updateIndexOfEmployees: async () => {
+    try {
+      await Model.Employee.update({ 
+        full_text_search: sequelize.fn('to_tsvector', sequelize.col('username'))
+      }, 
+      { 
+        where: {
+          full_text_search: null
+        }
+      });
+    } catch (error) { 
+      console.log(`Error al agregar índices pregunta: Error: ${error}`)
+    }
+  },
 
   validateRefreshToken : async (token) => {
     try {

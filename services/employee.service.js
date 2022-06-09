@@ -21,44 +21,27 @@ module.exports = {
       const employees = await Model.Employee.findAll({
           where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
       });
-      updateIndexOfEmployees();
+      // updateIndexOfEmployees();
       return employees;
     } catch (error) {
       console.log(`Error al obtener preguntas: Error: ${error}`)
     }
   },
 
-  updateIndexOfEmployees: async () => {
-    try {
-      await Model.Employee.update({ 
-        full_text_search: sequelize.fn('to_tsvector', sequelize.col('username'))
-      }, 
-      { 
-        where: {
-          full_text_search: null
-        }
-      });
-    } catch (error) { 
-      console.log(`Error al agregar índices pregunta: Error: ${error}`)
-    }
-  },
-
-  /*
-  updateIndexOfQuestions: async () => {
-    try {
-      await Model.Question.update({ 
-        full_text_search: sequelize.fn('to_tsvector', sequelize.col('question_text'))
-      }, 
-      { 
-        where: {
-          full_text_search: null
-        }
-      });
-    } catch (error) { 
-      console.log(`Error al agregar índices pregunta: Error: ${error}`)
-    }
-  },
-  */
+  // updateIndexOfEmployees: async () => {
+  //   try {
+  //     await Model.Employee.update({ 
+  //       full_text_search: sequelize.fn('to_tsvector', sequelize.col('username'))
+  //     }, 
+  //     { 
+  //       where: {
+  //         full_text_search: null
+  //       }
+  //     });
+  //   } catch (error) { 
+  //     console.log(`Error al agregar índices pregunta: Error: ${error}`)
+  //   }
+  // },
 
   deleteEmployee : async (employeeId) => {
     await Model.Employee.destroy({
