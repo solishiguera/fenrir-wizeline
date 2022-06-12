@@ -51,36 +51,7 @@ jest.mock('../services/questions.service.js', () => {
                 "full_text_search": ""
             }
           }),            
-          /*
-          updateQuestion : async (questionId, questionText) => {
-            try {
-              await Model.Question.update({ 
-                question_text: questionText,  date_last_modified: timestamp 
-              }, 
-              {
-                where: {
-                  question_id: questionId
-                }
-              });
-            } catch (error) { 
-              console.log(`Error al actualizar pregunta: Error: ${error}`)
-            }
-            
-          }, 
-        
-          deleteQuestion : async (questionId) => {
-            try {
-              await Model.Question.destroy({
-                where: {
-                  question_id: questionId
-                }
-              });
-            } catch (error) {
-              console.log(`Error al eliminar pregunta: error: ${error}`)
-            }
-        
-          },
-          */
+          
           getQuestionsByQuery : jest.fn( async (text) => {
             return {
               "questions": [
@@ -115,22 +86,6 @@ jest.mock('../services/questions.service.js', () => {
               ]
             }
           }),
-          /*
-          updateIndexOfQuestions: async () => {
-            try {
-              await Model.Question.update({ 
-                full_text_search: sequelize.fn('to_tsvector', sequelize.col('question_text'))
-              }, 
-              { 
-                where: {
-                  full_text_search: null
-                }
-              });
-            } catch (error) { 
-              console.log(`Error al agregar índices pregunta: Error: ${error}`)
-            }
-          },
-          */
     }
 });
 
@@ -194,7 +149,7 @@ test('Test de post question', async () => {
   };
 
   const data = await questionsData.addQuestion(req, res, next);
-  console.log(data);
+  //console.log(data);
 
   expect(data).toBe("Pregunta agregada.");
 });
@@ -212,7 +167,7 @@ test('Test de getQuestionsQuery', async () => {
       return obj;
   }
   const data = await questionsData.getQuestionsByQuery(req, res, next);
-  console.log(data);
+  //console.log(data);
 
   expect(data.questions.questions.length).toBe(2);
 });
