@@ -22,7 +22,7 @@ module.exports = {
       })
       return employee;
     } catch (error) {
-      console.log(`Error al obtener username: Error: ${error}`)
+      return console.log(`Error al obtener username: Error: ${error}`)
     }
   },
 

@@ -26,9 +26,9 @@ module.exports = {
 
       AuthServices.saveRefreshToken(refreshToken, employee['username'])
 
-      res.json({accessToken, refreshToken})
+      return res.json({accessToken, refreshToken})
     } catch (err) {
-      res.json({ message: `Error al inciar sesión. Err: ${err}` });
+      return res.json({ message: `Error al inciar sesión. Err: ${err}` });
     }
   },
 
@@ -71,7 +71,7 @@ module.exports = {
       const refreshToken = SecureEnv.generateRefreshToken(employee)
       AuthServices.saveRefreshToken(refreshToken, employee['username'])
       AuthServices.updateIndexOfEmployees();
-      res.json({accessToken, refreshToken}) 
+      return res.json({accessToken, refreshToken}) 
     } catch (err) {
       res.json({ message: `Error al registrar nuevo empleado. Err: ${err}` });
     }
