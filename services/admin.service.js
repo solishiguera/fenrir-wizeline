@@ -2,6 +2,7 @@ const pool = require('../config/db');
 const timestamp = new Date();
 const CommentModel = require('../model/comment.model');
 const EmployeeModel = require('../model/employee.model');
+const QuestionModel = require('../model/question.model');
 
 module.exports = { 
   getAllEmployees : async () => {
@@ -20,11 +21,16 @@ module.exports = {
     }
   },
 
-  markAsAnswer : async (commentId, isAnswer) => {
+  markAsAnswer : async (commentId, isAnswer, questionId) => {
     try {
       await CommentModel.Comment.update({ is_answer: isAnswer }, {
         where: {
           comment_id: commentId
+        }
+      });
+      await QuestionModel.Question.update({ is_answered: isAnswer }, {
+        where: {
+          question_id: questionId
         }
       });
     } catch (error) { 

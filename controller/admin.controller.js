@@ -12,7 +12,7 @@ module.exports = {
 
   markAsAnswer: async (req, res, next) => {
     try {
-      const employee = await AdminServices.markAsAnswer(req.params.id, req.body.is_answer);
+      const employee = await AdminServices.markAsAnswer(req.params.id, req.body.is_answer, req.body.question_id);
       res.json("Comentario registrado como respuesta.");
     } catch (err) {
       res.json({ message: `Error al registrar comentario como respuesta . Err: ${err}` });
