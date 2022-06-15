@@ -20,7 +20,7 @@ module.exports = {
     try {
       const employees = await Model.Employee.findAll({
           where: {full_text_search: {[Op.match]: sequelize.fn('to_tsquery', search)}}
-      });
+      })
       // updateIndexOfEmployees();
       return employees;
     } catch (error) {
